@@ -10,12 +10,12 @@
   },
   
   "action": {
-    "default_popup": "popup.html"
+    "default_popup": "popup.html",
+    "default_title": "Tabby"
   },
-  "host_permissions": [
-    "https://*/*"
-  ],
   "permissions": [
+    "tab",
+    "tabs",
     "tabGroups"
   ]
 }
