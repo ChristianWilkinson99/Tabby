@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="MockupStyle.css" />
+    <style type="text/css">
+        #searchin {
+            width: 295px;
+        }
+    </style>
+</head>
+<body>
+    <div class="mytabs">
+        <input type="radio" id="tabfree" name="mytabs" checked="checked" />
+        <label for="tabfree" class="fancyLabels">Save</label>
+        <div class="tab">
+   
+
+        </div>
+
+        <input type="radio" id="tabsilver" name="mytabs" />
+        <label for="tabsilver" class="fancyLabels">Load</label>
+        <div class="tab">
+            <h2></h2>
+            <label id = "searchlbl" runat="server" text="Test">Search</label>
+            <input type="text" id="searchin" name="searchin"/><br />
+            <br />
+            <label id = "sortTablbl" runat="server" text="Sort:">Sort:</label>
+           <select name="sortBy" id="sortSelect">
+                <option value="">--Sort By--</option>
+                <option value="Alpha">Alphabetically</option>
+                <option value="DateMade">Date Made</option>
+                <option value="lastLoaded">Last Opened Tab</option>
+           </select>
+            
+            <button id = "LoadTabs" runat="server" text="Button"/>
+            <label for="LoadTabs" >Load Tabs</label>
+    </div>
+        </div>
+</body>
+</html>
