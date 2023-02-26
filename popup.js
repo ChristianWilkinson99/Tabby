@@ -12,9 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-const elements = new Set();
-let map = new Map();
+// const elements        = new Set();
 
+
+let timestampedTabMap = new Map();
+let namedTabMap       = new Map();
+
+// Saves all the tabs in the current window
 function getTabs(tabs) {
   let timestamp = new Date().getTime();
   let session = [];
@@ -26,11 +30,45 @@ function getTabs(tabs) {
   map.set(timestamp, session);
 }
 
+// This stores all the tab groups (both named and timestamped) locally
+storeUpdatedTabGroups() 
+{
+  console.log("Storingin everything for next time")
+}
+
+// This brings all your old saved groups of tabs from all of history
+loadOldTabGroups()
+{
+  console.log("Get all od stored groups of tabs");
+}
+
+
+// Reports errors to the console
 function onError(error) {
   console.error(`Error: ${error}`);
 }
 
+
+
+// Extension Starts here 
+
+// On start we want to load all old tabs
+loadOldTabGroups();
+
 chrome.tabs.query({}).then(getTabs, onError);
+
+// On exit (when browser is closed)
+// we cn set an event listener to do this, since we don't know when the browser will close
+var background = chrome.extension.getBackgroundPage();
+
+addEventListener("unload", storeUpdatedTabGroups(), true);
+
+
+
+
+
+
+
 
 
 // // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator
