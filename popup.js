@@ -1,18 +1,15 @@
 //Tabby Functions
 
-    const ToSaveID = document.querySelector('#ToSaveID');
-    const ToLoadID = document.querySelector('#ToLoadID');
-	    ToSaveID.addEventListener('click', ToSave);
-		ToLoadID.addEventListener('click', ToLoad);
-
-
-	function ToSave(){
-		document.getElementById(toLoadListID).style.display = 'none';
-		document.getElementById(toSaveListID).style.display = 'block';
-		}
+	document.getElementById("ToSaveID").onclick = function() {
+		document.getElementById("toLoadListID").style.display = "none";
+		document.getElementById("toSaveListID").style.display = "block";
+		document.getElementById("ToSaveID").disabled = true;
+		document.getElementById("ToLoadID").disabled = false;
+	}
 	
-		function ToLoad(save, load) {
-		document.getElementById(toSaveListID).style.display = 'none';
-		document.getElementById(toLoadListID).style.display = 'block';
-		}
-	
+	document.getElementById("ToLoadID").onclick = function() {
+		document.getElementById("toSaveListID").style.display = "none";
+		document.getElementById("toLoadListID").style.display = "block";
+		document.getElementById("ToLoadID").disabled = true;
+		document.getElementById("ToSaveID").disabled = false;
+	}
