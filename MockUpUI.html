@@ -21,7 +21,6 @@
             <label for="groupSelectedbtn" >Group Selected</label>
             &nbsp;&nbsp;&nbsp;
             <button type="button" id = "groupallbtn" runat="server" >Button</button>
-            <br />
             <div class="mytabs">
                 <select Name="myTabs" Size="2" style="width: 352px; height: 170px; margin-top: 0px">  
                 <option> Tab 1</option>  
@@ -44,15 +43,31 @@
                 <option value="DateMade">Date Made</option>
                 <option value="lastLoaded">Last Opened Tab</option>
            </select>
-            
             <button type="button" id = "loadtabbtn" runat="server" >Load Tabs</button>
-            <div class="mytabs">
-                <select Name="myTabs" Size="2" style="width: 352px; height: 170px; margin-top: 0px">  
-                <option> Tab 1</option>  
-                <option> Tab 2 </option>  
-                </select>
+            <br />
+            <br />
+            <div id="mygroups" style= "width: 360px; white-space: nowrap; overflow-y: scroll;">
+                <details>
+                    <summary>Unsorted Group</summary>
+                        <div class="unsortedTabs">
+                            <select Name="unsortedTabs" Size="2" style="width: 330px; height: 170px; margin-top: 0px">  
+                                <option> Tab 1</option>  
+                                <option> Tab 2 </option>  
+                            </select>
+                        </div>
+               </details>
+                 <details>
+                    <summary>Test 2 Group</summary>
+                        <div class="test2Tabs">
+                            <select Name="test2tabs" Size="2" style="width: 330px; height: 170px; margin-top: 0px">  
+                                <option> Tab 1</option>  
+                                <option> Tab 2 </option>  
+                            </select>
+                        </div>
+               </details>
             </div>
+       </div>
     </div>
-        </div>
+        
 </body>
 </html>
