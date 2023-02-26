@@ -20,8 +20,14 @@
             <button id = "groupSelectedbtn" runat="server" text="Button"/>
             <label for="groupSelectedbtn" >Group Selected</label>
             &nbsp;&nbsp;&nbsp;
-            <button id = "groupallbtn" runat="server" text="Button"/>
-            <label for="groupallbtn" >Group All</label>
+            <button type="button" id = "groupallbtn" runat="server" >Button</button>
+            <br />
+            <div class="mytabs">
+                <select Name="myTabs" Size="2" style="width: 352px; height: 170px; margin-top: 0px">  
+                <option> Tab 1</option>  
+                <option> Tab 2 </option>  
+                </select>
+            </div>
 
         </div>
 
@@ -39,8 +45,13 @@
                 <option value="lastLoaded">Last Opened Tab</option>
            </select>
             
-            <button id = "LoadTabs" runat="server" text="Button"/>
-            <label for="LoadTabs" >Load Tabs</label>
+            <button type="button" id = "loadtabbtn" runat="server" >Load Tabs</button>
+            <div class="mytabs">
+                <select Name="myTabs" Size="2" style="width: 352px; height: 170px; margin-top: 0px">  
+                <option> Tab 1</option>  
+                <option> Tab 2 </option>  
+                </select>
+            </div>
     </div>
         </div>
 </body>

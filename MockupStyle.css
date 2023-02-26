@@ -21,7 +21,10 @@
         padding: 20px;
         background: #fff;
         order: 1;
-        display: none;
+            /*
+            comment this display out, when adding new elements, makes it easier
+            */
+            display: none;
         
     }
 
