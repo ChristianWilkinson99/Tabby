@@ -7,6 +7,9 @@
     <title></title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="popup.css" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Indie+Flower" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Delius" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Bubblegum+Sans" />
     <style type="text/css">
         #searchin {
             width: 295px;
@@ -19,38 +22,41 @@
         <input type="radio" id="tabfree" name="mytabs" checked="checked" />
         <label for="tabfree" class="fancyLabels">Save</label>
         <div class="tab">
-            <button id="groupSelectedbtn" text="Button" />
+            <button id="groupSelectedbtn"class="prettybuttons"/>
             <label for="groupSelectedbtn">Group Selected</label>
             </button>
-            <button type="button" id="groupAllbtn">
-                <label for="groupAllbtn">Group All</label>
-            </button>
-            <div class="mytabs" Name="myTabs" Size="2" style="width: 352px; height: 170px; margin-top: 0px">
-                <ul>
+            &nbsp;&nbsp;&nbsp;
+            <button type="button" id="groupAllbtn" onclick="showNameGroup()" class="prettybuttons">Group All</button>
+            <br />
+            <div class="namegroup" id="namegroupdiv">
+                <br />
+                <label id="namegrouplbl" runat="server" class="indielbl">Name</label>
+            <input type="text" id="namegroupin" name="namegroupin" /><br />
+            </div>
+            <div class="mysavedtabs" Name="myTabs" Size="2" style="width: 352px; height: 170px; margin-top: 0px">
+                    <ul>
                     <li><input type="checkbox"> tab title 1</li>
                     <li><input type="checkbox"> tab title 2</li>
                 </ul>
             </div>
         </div>
-
         <input type="radio" id="tabsilver" name="mytabs" />
         <label for="tabsilver" class="fancyLabels">Load</label>
         <div class="tab">
-            <label id="searchlbl" runat="server" text="Test">Search</label>
+            <label id="searchlbl" runat="server" text="Test" class="indielbl">Search</label>
             <input type="text" id="searchin" name="searchin" /><br />
             <br />
-            <label id="sortTablbl" runat="server" text="Sort:">Sort:</label>
+            <label id="sortTablbl" runat="server" text="Sort:" class="indielbl">Sort:</label>
             <select name="sortBy" id="sortSelect">
                 <option value="">--Sort By--</option>
                 <option value="Alpha">Alphabetically</option>
                 <option value="DateMade">Date Made</option>
                 <option value="lastLoaded">Last Opened Tab</option>
             </select>
-            <button type="button" id="loadtabbtn" runat="server">Load Tabs</button>
+            &nbsp;&nbsp;&nbsp;
+            <button type="button" id="loadtabbtn" class="prettybuttons">Load Tabs</button>
             <br />
             <br />
-
-
             <div id="mygroups" style="width: 360px; white-space: nowrap; overflow-y: scroll;"">
             <ul>
                 <li>
@@ -68,9 +74,7 @@
                     </select>
                 </details>
             </div>
-
             </li>
-
             <li>
                 <div>
                     <label>sortedTabs</label>
@@ -90,7 +94,16 @@
             </ul>
         </div>
     </div>
-
+    </div>
+<script>
+    function showNameGroup() {
+        var x = document.getElementById("namegroupdiv");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+</script>
 </body>
-
 </html>

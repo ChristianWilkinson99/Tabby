@@ -1,9 +1,66 @@
 ﻿body {
-    background: #ccc;
-    width:400px;
-    font-family: 'Roboto', sans-serif;
+    background: #f5fffc;
+    width: 455px;
 }
 
+.namegroup {
+    display: none;
+}
+
+input {
+    padding: 2px;
+    border-radius: 6px;
+    font-size: 12px;
+    background: #fbfbfb;
+    border: 2px solid transparent;
+    height: 20px;
+    box-shadow: 0 0 0 1px #dddddd, 0 2px 4px 0 rgb(0 0 0 / 7%), 0 1px 1.5px 0 rgb(0 0 0 / 5%);
+}
+    focus input: focus{
+        border: 2px solid #000;
+        border-radius: 4px;
+    }
+
+select {
+    width: 120px;
+    height: 30px;
+    border: 1px solid #999;
+    font-size: 14px;
+    color: #1c87c9;
+    border-radius: 5px;
+    box-shadow: 4px 4px #ccc;
+    font-family: "Delius";
+}
+.prettybuttons {
+    outline: 0;
+    grid-gap: 8px;
+    align-items: center;
+    background: #cae8ff;
+    border: 1px solid #000;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-flex;
+    flex-shrink: 0;
+    font-size: 16px;
+    gap: 8px;
+    justify-content: center;
+    line-height: 1.5;
+    overflow: hidden;
+    padding: 6px 9px;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    transition: all .14s ease-out;
+    white-space: nowrap;
+    font-family: "Bubblegum Sans";
+}
+    .prettybuttons:hover {
+        box-shadow: 4px 4px 0 #000;
+        transform: translate(-4px,-4px);
+    }
+
+    .prettybuttons:focus-visible {
+        outline-offset: 1px;
+    }
 .mytabs {
     display: flex;
     flex-wrap: wrap;
@@ -17,13 +74,13 @@
     }
 
     .mytabs .tab {
+        font-family: Delius;
         width: 100%;
         padding: 20px;
-        background: #fff;
+        background: #eddeff;
         order: 1;
         /*
             comment this display out, when adding new elements, makes it easier
-                
             */
         display: none;
     }
@@ -39,9 +96,15 @@
     .mytabs input[type="radio"]:checked + label {
         background: #fff;
     }
-    .fancyLabels {
-        padding: 25px;
-        background: #e2e2e2;
-        font-weight: bold;
-    }
 
+.fancyLabels {
+    padding: 25px;
+    background: #ffdcd7;
+    font-weight: bold;
+    font-family: "Bubblegum Sans";
+}
+
+.indielbl {
+    font-family: "Indie Flower";
+    font-size: 20px;
+}
