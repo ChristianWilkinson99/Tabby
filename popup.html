@@ -1,26 +1,96 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./popup.css" />
-  </head>
-  <body>
-    <template id="li_template">
-      <li>
-        <a>
-          <h3 class="title">Tab Title</h3>
-          <p class="pathname">Tab Pathname</p>
-        </a>
-      </li>
-    </template>
+﻿<!DOCTYPE html>
 
-    <h1>Google Dev Docs</h1>
-    <button>Group Tabs</button>
-	<button>Group Tabs</button>
-    <ul></ul>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 
-    <script src="./popup.js" type="module"></script>
-  </body>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="popup.css" />
+    <style type="text/css">
+        #searchin {
+            width: 295px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="mytabs">
+        <input type="radio" id="tabfree" name="mytabs" checked="checked" />
+        <label for="tabfree" class="fancyLabels">Save</label>
+        <div class="tab">
+            <button id="groupSelectedbtn" text="Button" />
+            <label for="groupSelectedbtn">Group Selected</label>
+            </button>
+            <button type="button" id="groupAllbtn">
+                <label for="groupAllbtn">Group All</label>
+            </button>
+            <div class="mytabs" Name="myTabs" Size="2" style="width: 352px; height: 170px; margin-top: 0px">
+                <ul>
+                    <li><input type="checkbox"> tab title 1</li>
+                    <li><input type="checkbox"> tab title 2</li>
+                </ul>
+            </div>
+        </div>
+
+        <input type="radio" id="tabsilver" name="mytabs" />
+        <label for="tabsilver" class="fancyLabels">Load</label>
+        <div class="tab">
+            <label id="searchlbl" runat="server" text="Test">Search</label>
+            <input type="text" id="searchin" name="searchin" /><br />
+            <br />
+            <label id="sortTablbl" runat="server" text="Sort:">Sort:</label>
+            <select name="sortBy" id="sortSelect">
+                <option value="">--Sort By--</option>
+                <option value="Alpha">Alphabetically</option>
+                <option value="DateMade">Date Made</option>
+                <option value="lastLoaded">Last Opened Tab</option>
+            </select>
+            <button type="button" id="loadtabbtn" runat="server">Load Tabs</button>
+            <br />
+            <br />
+
+
+            <div id="mygroups" style="width: 360px; white-space: nowrap; overflow-y: scroll;"">
+            <ul>
+                <li>
+                    <div>
+                        <label>unsorted</label>
+                    </div>
+                    <div class=" groupDropDown">
+                <details>
+                    <summary></summary>
+                    <select Name="unsortedTabs" Size="2" style="width: 330px; height: 170px; margin-top: 0px">
+                        <optgroup>
+                            <option> Tab 1</option>
+                            <option> Tab 2 </option>
+                        </optgroup>
+                    </select>
+                </details>
+            </div>
+
+            </li>
+
+            <li>
+                <div>
+                    <label>sortedTabs</label>
+                </div>
+                <div class="groupDropDown">
+                    <details>
+                        <summary></summary>
+                        <select Name="unsortedTabs" Size="2" style="width: 330px; height: 170px; margin-top: 0px">
+                            <optgroup>
+                                <option> Tab 1</option>
+                                <option> Tab 2 </option>
+                            </optgroup>
+                        </select>
+                    </details>
+                </div>
+            </li>
+            </ul>
+        </div>
+    </div>
+
+</body>
+
 </html>

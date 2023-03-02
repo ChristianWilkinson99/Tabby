@@ -1,24 +1,47 @@
-body {
-  width: 20rem;
+﻿body {
+    background: #ccc;
+    width:400px;
+    font-family: 'Roboto', sans-serif;
 }
 
-ul {
-  list-style-type: none;
-  padding-inline-start: 0;
-  margin: 1rem 0;
+.mytabs {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 25px;
 }
 
-li {
-  padding: 0.25rem;
-}
-li:nth-child(odd) {
-  background: #80808030;
-}
-li:nth-child(even) {
-  background: #ffffff;
-}
+    .mytabs input[type="radio"] {
+        display: none;
+    }
 
-h3,
-p {
-  margin: 0;
-}
+    .mytabs .tab {
+        width: 100%;
+        padding: 20px;
+        background: #fff;
+        order: 1;
+        /*
+            comment this display out, when adding new elements, makes it easier
+                
+            */
+        display: none;
+    }
+
+        .mytabs .tab h2 {
+            font-size: 3em;
+        }
+
+    .mytabs input[type='radio']:checked + label + .tab {
+        display: block;
+    }
+
+    .mytabs input[type="radio"]:checked + label {
+        background: #fff;
+    }
+    .fancyLabels {
+        padding: 25px;
+        background: #e2e2e2;
+        font-weight: bold;
+    }
+

@@ -10,9 +10,10 @@
   },
   
   "action": {
-    "default_popup": "popup.html",
-    "default_title": "Tabby"
+    "default_title": "Tabby",
+    "default_popup": "popup.html"
   },
+
   "permissions": [
     "tab",
     "tabs",
