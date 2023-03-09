@@ -12,35 +12,128 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// const elements        = new Set();
+var myTabGroups = [];
+var currentTabs = [];
 
+class tabGroup
+{
+  name = "unsorted";
+  timestamp = 0;
+  tabList = [];
 
-let timestampedTabMap = new Map();
-let namedTabMap       = new Map();
+  constructor(timestamp)
+  {
+    this.timestamp = timestamp;
+  }
+
+  setName(name) 
+  {
+    this.name = name;
+  }
+
+  addTab(tab)
+  {
+    this.tabList.push(tab);
+  }
+
+}
 
 // Saves all the tabs in the current window
-function getTabs(tabs) {
-  let timestamp = new Date().getTime();
-  let session = [];
-  for (const tab of tabs) {
-    session.push(tab.url);
-    console.log(tab.url);
-    console.log(timestamp);
-  }
-  map.set(timestamp, session);
-}
-
-// This stores all the tab groups (both named and timestamped) locally
-storeUpdatedTabGroups() 
+async function getCurrentTabs() 
 {
-  console.log("Storingin everything for next time")
+  chrome.tabs.query({}).then((tabs) =>
+  {
+    // console.log(tabs);
+    for ( var tab of tabs) 
+    {
+      currentTabs.push(tab);
+    }
+  });
 }
 
-// This brings all your old saved groups of tabs from all of history
-loadOldTabGroups()
+// Looks at all the checked tabs in ist, and saves them in a "tabGroup" object in the "myTabGroups" list
+function saveSelectedTabs()
+{
+  console.log("Saving selected tabs");
+  var ts = new Date();
+  var tg = new tabGroup(ts);
+  var ul = document.getElementsByClassName('tabsToSaveList');
+  for(var i=0; ul[i]; ++i)
+  {
+      if(ul[i].checked)
+      {
+            // Todo: try/catch error if not a tab.
+        
+          console.log("checked");
+          tg.addTab(ul[i].value);
+      }
+      myTabGroups.push(tg);
+  }
+}
+
+// // This stores all the tab groups (both named and timestamped) locally
+// function storeUpdatedTabGroups() 
+// {
+//   console.log("Storing everything for next time")
+// }
+
+// // This brings all your old saved groups of tabs from all of history
+function restoreGroups()
 {
   console.log("Get all od stored groups of tabs");
 }
+
+
+// function changeGroupName(sessionNumber, newName)
+// {
+//   myTabGroups[sessionNumber].setName(newName);
+// }
+
+// function loadGroup(sessionNumber)
+// {
+//   for (tab in myTabGroups[sessionNumber])
+//   {
+//     window.open(tab.url);
+//   }
+// }
+
+
+async function showTabsToSave()
+{
+  console.log("creating list of potential tabs to save");
+  await getCurrentTabs();
+  let list = document.getElementById("tabsToSaveList");
+  console.log(currentTabs);
+  currentTabs.forEach((i.) =>{
+    console.log(i);
+    let li = document.createElement("li");
+    li.innerText = i.title;
+    list.appendChild(li);
+  });
+  // for ( i of currentTabs)
+  // {
+  //   console.log(i);
+  //   let li = document.createElement("li");
+  //   li.innerText = i.title;
+  //   list.appendChild(li);
+  // }
+}
+
+function showTabsToLoad()
+{
+  var ttl = document.getElementById("tabsToLoadList");
+  for (var tg in myTabGroups)
+  {
+    // TODO: generate div for group, and appen
+   ttl.appendChild() 
+    for ( var t in tg)
+    {
+      // TODO: generate tab element
+      // append child to whatever inside of tg
+    }
+  }
+}
+
 
 
 // Reports errors to the console
@@ -48,24 +141,23 @@ function onError(error) {
   console.error(`Error: ${error}`);
 }
 
-
-
 // Extension Starts here 
 
-// On start we want to load all old tabs
-loadOldTabGroups();
-
-chrome.tabs.query({}).then(getTabs, onError);
-
+// Add event listeners
 // On exit (when browser is closed)
-// we cn set an event listener to do this, since we don't know when the browser will close
 var background = chrome.extension.getBackgroundPage();
+// we cn set an event listener to do this, since we don't know when the browser will close
+// background.addEventListener("unload", storeUpdatedTabGroups(), true);
 
-addEventListener("unload", storeUpdatedTabGroups(), true);
+const groupSelectedButton = document.getElementById("groupSelectedbtn");
+groupSelectedButton.addEventListener("click", saveSelectedTabs);
 
+document.addEventListener('DOMContentLoaded',showTabsToSave);
 
+// On start we want to load all old tabs
+// restoreTabGroups();
 
-
+// chrome.tabs.query({}).then(getTabs, onError);
 
 
 

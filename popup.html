@@ -21,11 +21,10 @@
     <div class="mytabs">
         <input type="radio" id="tabfree" name="mytabs" checked="checked" />
         <label for="tabfree" class="fancyLabels">Save</label>
-        <div class="tab">
-            <button id="groupSelectedbtn"class="prettybuttons"/>
+        <div class="tab" id = "tabsToSaveTab">
+            <button id="groupSelectedbtn" class="prettybuttons"/>
             <label for="groupSelectedbtn">Group Selected</label>
             </button>
-            &nbsp;&nbsp;&nbsp;
             <button type="button" id="groupAllbtn" onclick="showNameGroup()" class="prettybuttons">Group All</button>
             <br />
             <div class="namegroup" id="namegroupdiv">
@@ -33,8 +32,8 @@
                 <label id="namegrouplbl" runat="server" class="indielbl">Name</label>
             <input type="text" id="namegroupin" name="namegroupin" /><br />
             </div>
-            <div class="mysavedtabs" Name="myTabs" Size="2" style="width: 352px; height: 170px; margin-top: 0px">
-                    <ul>
+            <div Name="myTabs" Size="2" style="width: 352px; height: 170px; margin-top: 0px">
+                <ul id="tabsToSaveList">
                     <li><input type="checkbox"> tab title 1</li>
                     <li><input type="checkbox"> tab title 2</li>
                 </ul>
@@ -53,12 +52,12 @@
                 <option value="DateMade">Date Made</option>
                 <option value="lastLoaded">Last Opened Tab</option>
             </select>
-            &nbsp;&nbsp;&nbsp;
+            <!-- &nbsp;&nbsp;&nbsp; -->
             <button type="button" id="loadtabbtn" class="prettybuttons">Load Tabs</button>
             <br />
             <br />
             <div id="mygroups" style="width: 360px; white-space: nowrap; overflow-y: scroll;"">
-            <ul>
+            <ul id = "tabsToLoadList">
                 <li>
                     <div>
                         <label>unsorted</label>
@@ -95,7 +94,8 @@
         </div>
     </div>
     </div>
-<script>
+    <script src="popup.js"></script>
+<!-- <script>
     function showNameGroup() {
         var x = document.getElementById("namegroupdiv");
         if (x.style.display === "none") {
@@ -104,6 +104,6 @@
             x.style.display = "none";
         }
     }
-</script>
+</script> -->
 </body>
 </html>
