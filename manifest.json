@@ -13,11 +13,16 @@
     "default_title": "Tabby",
     "default_popup": "popup.html"
   },
+  
+  "background": {
+    "scripts": ["background.js"]
+  },
 
   "permissions": [
     "tab",
     "tabs",
     "tabGroups",
-    "storage"
+    "storage",
+    "background"
   ]
 }

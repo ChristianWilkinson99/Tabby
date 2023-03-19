@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-var myTabGroups = [];
-var currentTabs = [];
+let myTabGroups = [];
+let currentTabs = [];
 
 class tabGroup
 {
@@ -41,14 +41,36 @@ class tabGroup
 // Saves all the tabs in the current window
 async function getCurrentTabs() 
 {
-  chrome.tabs.query({}).then((tabs) =>
+  await chrome.tabs.query({}).then((tabs) =>
   {
-    // console.log(tabs);
-    for ( var tab of tabs) 
+    for ( const tab of tabs) 
     {
       currentTabs.push(tab);
     }
   });
+}
+
+function storeUpdatedTabGroups()
+{
+  chrome.storage.sync.set({ "myTabGroups" : myTabGroups }, function() {
+    console.log("Storing everything for next time");
+    if (chrome.runtime.error) {
+      console.log("Runtime error.");
+    }
+  });
+}
+
+function restore()
+{
+  chrome.storage.sync.get("myTabGroups", values => {
+    if (!chrome.runtime.error)
+    {
+        console.log("restoring everything:");
+        console.log(values);
+        myTabGroups = values;
+        console.log(myTabGroups);
+    }
+});
 }
 
 // Looks at all the checked tabs in ist, and saves them in a "tabGroup" object in the "myTabGroups" list
@@ -57,45 +79,41 @@ function saveSelectedTabs()
   console.log("Saving selected tabs");
   var ts = new Date();
   var tg = new tabGroup(ts);
-  var ul = document.getElementsByClassName('tabsToSaveList');
-  for(var i=0; ul[i]; ++i)
+  var ul = document.getElementById('tabsToSaveList');
+  var items = ul.getElementsByTagName("li");
+  console.log(items);
+  for(var i=0; items[i]; ++i)
   {
-      if(ul[i].checked)
+      if(items[i].childNodes[1].checked == true)
       {
-            // Todo: try/catch error if not a tab.
-        
-          console.log("checked");
-          tg.addTab(ul[i].value);
+          console.log("saving "+currentTabs[i].title);
+          tg.addTab(currentTabs[i]);
+    
       }
-      myTabGroups.push(tg);
+  }
+    myTabGroups.push(tg);
+    console.log(myTabGroups);
+    storeUpdatedTabGroups();
+}
+
+
+function changeGroupName(sessionNumber, newName)
+{
+  myTabGroups[sessionNumber].setName(newName);
+}
+
+function loadTabFromGroup(sessionNumber, tabIndex)
+{
+  window.open(myTabGroups[sessionNumber].tabList[tabIndex]);
+}
+
+function loadGroup(sessionNumber)
+{
+  for (i in myTabGroups[sessionNumber])
+  {
+    loadTabFromGroup(sessionNumber, i);
   }
 }
-
-// // This stores all the tab groups (both named and timestamped) locally
-// function storeUpdatedTabGroups() 
-// {
-//   console.log("Storing everything for next time")
-// }
-
-// // This brings all your old saved groups of tabs from all of history
-function restoreGroups()
-{
-  console.log("Get all od stored groups of tabs");
-}
-
-
-// function changeGroupName(sessionNumber, newName)
-// {
-//   myTabGroups[sessionNumber].setName(newName);
-// }
-
-// function loadGroup(sessionNumber)
-// {
-//   for (tab in myTabGroups[sessionNumber])
-//   {
-//     window.open(tab.url);
-//   }
-// }
 
 
 async function showTabsToSave()
@@ -103,36 +121,33 @@ async function showTabsToSave()
   console.log("creating list of potential tabs to save");
   await getCurrentTabs();
   let list = document.getElementById("tabsToSaveList");
-  console.log(currentTabs);
-  currentTabs.forEach((i.) =>{
+
+  currentTabs.forEach((i) =>{
     console.log(i);
     let li = document.createElement("li");
+    let inp = document.createElement("input");
+    inp.type = 'checkbox';
     li.innerText = i.title;
+    li.appendChild(inp);
     list.appendChild(li);
-  });
-  // for ( i of currentTabs)
-  // {
-  //   console.log(i);
-  //   let li = document.createElement("li");
-  //   li.innerText = i.title;
-  //   list.appendChild(li);
-  // }
+  })
+  
 }
 
-function showTabsToLoad()
-{
-  var ttl = document.getElementById("tabsToLoadList");
-  for (var tg in myTabGroups)
-  {
-    // TODO: generate div for group, and appen
-   ttl.appendChild() 
-    for ( var t in tg)
-    {
-      // TODO: generate tab element
-      // append child to whatever inside of tg
-    }
-  }
-}
+// function showTabsToLoad()
+// {
+//   var ttl = document.getElementById("tabsToLoadList");
+//   for (var tg in myTabGroups)
+//   {
+//     // TODO: generate div for group, and appen
+//    ttl.appendChild() 
+//     for ( var t in tg)
+//     {
+//       // TODO: generate tab element
+//       // append child to whatever inside of tg
+//     }
+//   }
+// }
 
 
 
@@ -143,55 +158,19 @@ function onError(error) {
 
 // Extension Starts here 
 
-// Add event listeners
-// On exit (when browser is closed)
-var background = chrome.extension.getBackgroundPage();
-// we cn set an event listener to do this, since we don't know when the browser will close
-// background.addEventListener("unload", storeUpdatedTabGroups(), true);
 
 const groupSelectedButton = document.getElementById("groupSelectedbtn");
 groupSelectedButton.addEventListener("click", saveSelectedTabs);
 
-document.addEventListener('DOMContentLoaded',showTabsToSave);
+document.addEventListener('DOMContentLoaded', function() {
 
-// On start we want to load all old tabs
-// restoreTabGroups();
+  restore();
+  showTabsToSave();
 
-// chrome.tabs.query({}).then(getTabs, onError);
+});
 
+window.addEventListener('unload', function() {
 
-
-
-
-// // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Collator
-// const collator = new Intl.Collator();
-// _tabs.sort((a, b) => collator.compare(a.title, b.title));
-
-// const template = document.getElementById("li_template");
-
-
-
-// for (const tab of tabs) {
-//   const element = template.content.firstElementChild.cloneNode(true);
-
-//   const title = tab.title.split("-")[0].trim();
-//   const pathname = new URL(tab.url).pathname.slice("/docs".length);
-
-//   element.querySelector(".title").textContent = title;
-//   element.querySelector(".pathname").textContent = pathname;
-//   element.querySelector("a").addEventListener("click", async () => {
-//     // need to focus window as well as the active tab
-//     await chrome.tabs.update(tab.id, { active: true });
-//     await chrome.windows.update(tab.windowId, { focused: true });
-//   });
-
-//   elements.add(element);
-// }
-// document.querySelector("ul").append(...elements);
-
-// const button = document.querySelector("button");
-// button.addEventListener("click", async () => {
-//   const tabIds = tabs.map(({ id }) => id);
-//   const group = await chrome.tabs.group({ tabIds });
-//   await chrome.tabGroups.update(group, { title: "DOCS" });
-// });
+	// unregisterEvents();
+    
+});
