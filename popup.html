@@ -21,8 +21,8 @@
     <div class="mytabs">
         <input type="radio" id="tabfree" name="mytabs" checked="checked" />
         <label for="tabfree" class="fancyLabels">Save</label>
-        <div class="tab" id = "tabsToSaveTab">
-            <button id="groupSelectedbtn" class="prettybuttons"/>
+        <div class="tab" id="tabsToSaveTab">
+            <button id="groupSelectedbtn" class="prettybuttons" />
             <label for="groupSelectedbtn">Group Selected</label>
             </button>
             <button type="button" id="groupAllbtn" onclick="showNameGroup()" class="prettybuttons">Group All</button>
@@ -30,7 +30,7 @@
             <div class="namegroup" id="namegroupdiv">
                 <br />
                 <label id="namegrouplbl" runat="server" class="indielbl">Name</label>
-            <input type="text" id="namegroupin" name="namegroupin" /><br />
+                <input type="text" id="namegroupin" name="namegroupin" /><br />
             </div>
             <div Name="myTabs" Size="2" style="width: 352px; height: 170px; margin-top: 0px">
                 <ul id="tabsToSaveList">
@@ -54,49 +54,43 @@
             <button type="button" id="loadtabbtn" class="prettybuttons">Load Tabs</button>
             <br />
             <br />
-            <div id="mygroups" style="width: 360px; white-space: nowrap; overflow-y: scroll;"">
-            <ul id = "tabsToLoadList">
-                <li>
-                    <div class="tabgroup">
-                        <label>unsorted</label>
-                         <button type="button" id="groupRenamebtn" class="prettybuttons2">Rename</button>
-                         <button type="button" id="groupReloadbtn" class="prettybuttons2">Reload</button>
-                         <button type="button" id="groupDeletebtn" class="prettybuttons2">Delete</button>
-                    </div>
-                    <div class=" groupDropDown">
-                <details>
-                    <summary></summary>
-                    <select Name="unsortedTabs" Size="2" style="width: 330px; height: 170px; margin-top: 0px">
-                        <optgroup>
-                            <option> Tab 1</option>
-                            <option> Tab 2 </option>
-                        </optgroup>
-                    </select>
-                </details>
+            <div id="mygroups" style="width: 360px; white-space: nowrap; overflow-y: scroll;" ">
+                <ul id="tabsToLoadList">
+                    <li>
+                        <div>
+                            <label>unsorted</label>
+                        </div>
+                        <div class=" groupDropDown">
+                            <details>
+                                <summary></summary>
+                                <select Name="unsortedTabs" Size="2" style="width: 330px; height: 170px; margin-top: 0px">
+                                    <optgroup>
+                                        <option> Tab 1</option>
+                                        <option> Tab 2 </option>
+                                    </optgroup>
+                                </select>
+                            </details>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <label>sortedTabs</label>
+                        </div>
+                        <div class="groupDropDown">
+                            <details>
+                                <summary></summary>
+                                <select Name="unsortedTabs" Size="2" style="width: 330px; height: 170px; margin-top: 0px">
+                                    <optgroup>
+                                        <option> Tab 1</option>
+                                        <option> Tab 2 </option>
+                                    </optgroup>
+                                </select>
+                            </details>
+                        </div>
+                    </li>
+                </ul>
             </div>
-            </li>
-            <li>
-                <div class="tabgroup">
-                    <label>sortedTabs</label>
-                     <button type="button" id="groupRenamebtn2" class="prettybuttons2">Rename</button>
-                     <button type="button" id="groupReloadbtn2" class="prettybuttons2">Reload</button>
-                     <button type="button" id="groupDeletebtn2" class="prettybuttons2">Delete</button>
-                </div>
-                <div class="groupDropDown">
-                    <details>
-                        <summary></summary>
-                        <select Name="unsortedTabs" Size="2" style="width: 330px; height: 170px; margin-top: 0px">
-                            <optgroup>
-                                <option> Tab 1</option>
-                                <option> Tab 2 </option>
-                            </optgroup>
-                        </select>
-                    </details>
-                </div>
-            </li>
-            </ul>
         </div>
-    </div>
     </div>
     <script src="popup.js"></script>
 </body>
