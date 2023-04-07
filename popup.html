@@ -54,44 +54,31 @@
             <button type="button" id="loadtabbtn" class="prettybuttons">Load Tabs</button>
             <br />
             <br />
-            <div id="mygroups" style="width: 360px; white-space: nowrap; overflow-y: scroll;" ">
-                <ul id="tabsToLoadList">
-                    <li>
-                        <div>
-                            <label>unsorted</label>
-                        </div>
-                        <div class=" groupDropDown">
-                            <details>
-                                <summary></summary>
-                                <select Name="unsortedTabs" Size="2" style="width: 330px; height: 170px; margin-top: 0px">
-                                    <optgroup>
-                                        <option> Tab 1</option>
-                                        <option> Tab 2 </option>
-                                    </optgroup>
-                                </select>
-                            </details>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <label>sortedTabs</label>
-                        </div>
-                        <div class="groupDropDown">
-                            <details>
-                                <summary></summary>
-                                <select Name="unsortedTabs" Size="2" style="width: 330px; height: 170px; margin-top: 0px">
-                                    <optgroup>
-                                        <option> Tab 1</option>
-                                        <option> Tab 2 </option>
-                                    </optgroup>
-                                </select>
-                            </details>
-                        </div>
-                    </li>
-                </ul>
-            </div>
+            <div id="mygroups" style="width: 360px; white-space: nowrap; overflow-y: scroll;"">
+            <ul id = "tabsToLoadList">
+            </ul>
         </div>
     </div>
+    </div>
+
+    <template id="groupToLoadListItem">
+    <li>
+        <div>
+        <label>unsorted</label>
+        </div> 
+        <div class=" groupDropDown">
+            <details>
+            <summary></summary>
+                <select Name="unsortedTabs" Size="2" style="width: 330px; height: 170px; margin-top: 0px">
+                    <optgroup>
+                        <option> Tab 1</option>
+                    </optgroup>
+                </select>
+            </details>
+        </div>
+    </li>
+    </template>
+
     <script src="popup.js"></script>
 </body>
 </html>

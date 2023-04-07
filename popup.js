@@ -15,10 +15,12 @@
 let myTabGroups = [];
 let currentTabs = [];
 
-class tabGroup {
-    name = "unsorted";
-    timestamp = 0;
-    tabList = [];
+class tabGroup
+{
+  name = "unsorted";
+  timestamp = 0;
+  sessionNumber = 0;
+  tabList = [];
 
     constructor(timestamp) {
         this.timestamp = timestamp;
@@ -64,20 +66,23 @@ function restore() {
 }
 
 // Looks at all the checked tabs in ist, and saves them in a "tabGroup" object in the "myTabGroups" list
-function saveSelectedTabs() {
-    console.log("Saving selected tabs");
-    var ts = new Date();
-    var tg = new tabGroup(ts);
-    var ul = document.getElementById('tabsToSaveList');
-    var items = ul.getElementsByTagName("li");
-    console.log(items);
-    for (var i = 0; items[i]; ++i) {
-        if (items[i].childNodes[1].checked == true) {
-            console.log("saving " + currentTabs[i].title);
-            tg.addTab(currentTabs[i]);
-
-        }
-    }
+function saveSelectedTabs()
+{
+  console.log("Saving selected tabs");
+  var ts = new Date();
+  var tg = new tabGroup(ts); 
+  var ul = document.getElementById('tabsToSaveList');
+  var items = ul.getElementsByTagName("li");
+  console.log(items);
+  for(var i=0; items[i]; ++i)
+  {
+      if(items[i].childNodes[1].checked == true)
+      {
+          console.log("saving "+currentTabs[i].title);
+          tg.addTab(currentTabs[i]);
+    
+      }
+  }
     myTabGroups.push(tg);
     console.log(myTabGroups);
     storeUpdatedTabGroups();
@@ -116,6 +121,29 @@ async function showTabsToSave() {
     })
 
 }
+
+function showTabsToLoad()
+{
+  // Get the tabsToLoadList unordered list
+  const tabsToLoadList = document.getElementById("tabsToLoadList");
+
+  // Loop through each list item in the tabsToLoadList
+  for (let i = 0; i < tabsToLoadList.children.length; i++) 
+  {
+    const listItem = tabsToLoadList.children[i];
+    // Find the tab group at position i
+    const tabGroup = myTabGroups[i];
+    // Get the div inside the list item and add the class name "groupToLoad"
+    const divInsideListItem = listItem.querySelector("div");
+    divInsideListItem.classList.add("groupToLoadDiv");
+    divInsideListItem.title = tabGroup.name;
+    divInsideListItem.addEventListener("click", function() 
+    {
+      tabGroup.loadGroup();
+    });
+  }
+}
+
 
 // function showTabsToLoad()
 // {
