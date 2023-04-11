@@ -52,10 +52,35 @@
             </select>
             <!-- &nbsp;&nbsp;&nbsp; -->
             <button type="button" id="loadtabbtn" class="prettybuttons">Load Tabs</button>
+            <!-- TODO: Delete this button -->
+            <button type="button" id="CheckBoxBtn" class="prettybuttons">Test BUTTon PLEASE DELETE</button>
             <br />
             <br />
-            <div id="mygroups" style="width: 360px; white-space: nowrap; overflow-y: scroll;"">
+            <div id="mygroups" style="width: 360px; white-space: nowrap; overflow-y: scroll;">
             <ul id = "tabsToLoadList">
+                <li>
+                    <div>
+                    <label>unsorted</label>
+                    </div> 
+                        <div class=" groupDropDown">
+                            <div class="multiselect">
+                                <div class="selectBox">
+                                    <select>
+                                    <option>Select an option</option>
+                                    </select>
+                                    <div class="overSelect"></div>
+                                </div>
+                            <div id="checkboxes">
+                                <label for="one">
+                                <input type="checkbox" id="one" />First checkbox</label>
+                                <label for="two">
+                                <input type="checkbox" id="two" />Second checkbox</label>
+                                <label for="three">
+                                <input type="checkbox" id="three" />Third checkbox</label>
+                            </div>
+                        </div>
+                    </div>
+                </li>
             </ul>
         </div>
     </div>
@@ -67,14 +92,22 @@
         <label>unsorted</label>
         </div> 
         <div class=" groupDropDown">
-            <details>
-            <summary></summary>
-                <select Name="unsortedTabs" Size="2" style="width: 330px; height: 170px; margin-top: 0px">
-                    <optgroup>
-                        <option> Tab 1</option>
-                    </optgroup>
-                </select>
-            </details>
+            <!-- <div class="multiselect">
+                <div class="selectBox" onclick="showCheckboxes()">
+                  <select>
+                    <option>Select an option</option>
+                  </select>
+                  <div class="overSelect"></div>
+                </div>
+                <div id="checkboxes">
+                  <label for="one">
+                    <input type="checkbox" id="one" />First checkbox</label>
+                  <label for="two">
+                    <input type="checkbox" id="two" />Second checkbox</label>
+                  <label for="three">
+                    <input type="checkbox" id="three" />Third checkbox</label>
+                </div>
+              </div> -->
         </div>
     </li>
     </template>

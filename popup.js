@@ -2,8 +2,8 @@
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
 //
+    // You may obtain a copy of the License at
 //     https://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
@@ -19,7 +19,6 @@ class tabGroup
 {
   name = "unsorted";
   timestamp = 0;
-  sessionNumber = 0;
   tabList = [];
 
     constructor(timestamp) {
@@ -59,13 +58,13 @@ function restore() {
         if (!chrome.runtime.error) {
             console.log("restoring everything:");
             console.log(values);
-            myTabGroups = values;
+            // myTabGroups = values;
             console.log(myTabGroups);
         }
     });
 }
 
-// Looks at all the checked tabs in ist, and saves them in a "tabGroup" object in the "myTabGroups" list
+// Looks at all the checked tabs in list, and saves them in a "tabGroup" object in the "myTabGroups" list
 function saveSelectedTabs()
 {
   console.log("Saving selected tabs");
@@ -128,19 +127,25 @@ function showTabsToLoad()
   const tabsToLoadList = document.getElementById("tabsToLoadList");
 
   // Loop through each list item in the tabsToLoadList
-  for (let i = 0; i < tabsToLoadList.children.length; i++) 
+  for (group in myTabGroups) 
   {
-    const listItem = tabsToLoadList.children[i];
-    // Find the tab group at position i
-    const tabGroup = myTabGroups[i];
-    // Get the div inside the list item and add the class name "groupToLoad"
-    const divInsideListItem = listItem.querySelector("div");
-    divInsideListItem.classList.add("groupToLoadDiv");
-    divInsideListItem.title = tabGroup.name;
-    divInsideListItem.addEventListener("click", function() 
+    tabsToLoadList.appendChild() //put in group title
+    //add an onclick listener to the group title
+    for(tab in group.tabList)
     {
-      tabGroup.loadGroup();
-    });
+        // go inside of the group list, and add titles for tab
+        // add a checkbox
+    }
+    
+
+    
+    // const divInsideListItem = listItem.querySelector("div");
+    // divInsideListItem.classList.add("groupToLoadDiv");
+    // divInsideListItem.title = tabGroup.name;
+    // divInsideListItem.addEventListener("click", function() 
+    // {
+    //   tabGroup.loadGroup();
+    // });
   }
 }
 
@@ -185,3 +190,20 @@ window.addEventListener('unload', function () {
     // unregisterEvents();
 
 });
+
+var expanded = false;
+function showCheckboxes() {
+    console.log("Show checkboxes clicked");
+  var checkboxes = document.getElementById("checkboxes");
+  if (!expanded) {
+    checkboxes.style.display = "block";
+    expanded = true;
+  } else {
+    checkboxes.style.display = "none";
+    expanded = false;
+  }
+}
+
+let checkTheBoxes = document.getElementById("CheckBoxBtn");
+checkTheBoxes.addEventListener("click", showCheckboxes);
+
