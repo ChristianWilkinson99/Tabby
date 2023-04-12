@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Tabby",
+  "name": "Tab Manager for Chrome Dev Docs",
   "version": "1.0",
   "icons": {
     "16": "images/icon-16.png",
@@ -8,12 +8,16 @@
     "48": "images/icon-48.png",
     "128": "images/icon-128.png"
   },
+
   "action": {
+    "default_title": "Tabby",
     "default_popup": "popup.html"
   },
+
   "permissions": [
+    "tab",
     "tabs",
-    "storage",
-    "tabGroups"
+    "tabGroups",
+    "storage"
   ]
 }

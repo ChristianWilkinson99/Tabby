@@ -1,54 +1,95 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title>Tabby</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  </head>
-  <body>
-  <div class="topButtons">
-  	  <button id="ToSaveID" disabled="true">To Save</button>
-	  <button id="ToLoadID">To Load</button>
-  </div>
-  
-  <div id="toSaveListID">
-	<div class="groupButtons">
-		<button id="GroupTabs">Group Tabs</button>
-		<button id="GroupAll">Group All</button>
-	</div>
-	<div class="groupName">
-	<label for="NameGroup">"Name Group: "</label>
-	<input type="text" id="groupNameID">
-	</div>
-    <div class="toSave-list" id="toSaveList">
-	"to Save list"
-	</div>
-  </div>
-  
-  <div id="toLoadListID" style="display: none;">
-    <div class="search-box">
-      <input
-        type="text"
-        id="searchBox"
-        class="searchBox"
-        placeholder="search tabs"
-      />
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="popup.css" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Indie+Flower" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Delius" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Bubblegum+Sans" />
+    <style type="text/css">
+        #searchin {
+            width: 295px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="mytabs">
+        <input type="radio" id="tabfree" name="mytabs" checked="checked" />
+        <label for="tabfree" class="fancyLabels">Save</label>
+        <div class="tab" id="tabsToSaveTab">
+            <button id="groupSelectedbtn" class="prettybuttons" />
+            <label for="groupSelectedbtn">Group Selected</label>
+            </button>
+            <button type="button" id="groupAllbtn" onclick="showNameGroup()" class="prettybuttons">Group All</button>
+            <br />
+            <div class="namegroup" id="namegroupdiv">
+                <br />
+                <label id="namegrouplbl" runat="server" class="indielbl">Name</label>
+                <input type="text" id="namegroupin" name="namegroupin" /><br />
+            </div>
+            <div Name="myTabs" Size="2" style="width: 352px; height: 170px; margin-top: 0px">
+                <ul id="tabsToSaveList">
+                </ul>
+            </div>
+        </div>
+        <input type="radio" id="tabsilver" name="mytabs" />
+        <label for="tabsilver" class="fancyLabels">Load</label>
+        <div class="tab">
+            <label id="searchlbl" runat="server" text="Test" class="indielbl">Search</label>
+            <input type="text" id="searchin" name="searchin" /><br />
+            <br />
+            <label id="sortTablbl" runat="server" text="Sort:" class="indielbl">Sort:</label>
+            <select name="sortBy" id="sortSelect">
+                <option value="">--Sort By--</option>
+                <option value="Alpha">Alphabetically</option>
+                <option value="DateMade">Date Made</option>
+                <option value="lastLoaded">Last Opened Tab</option>
+            </select>
+            <!-- &nbsp;&nbsp;&nbsp; -->
+            <button type="button" id="loadtabbtn" class="prettybuttons">Load Tabs</button>
+            <br />
+            <br />
+            <div id="mygroups" style="width: 360px; white-space: nowrap; overflow-y: scroll;">
+			
+			<button type="button" id="testBtn" class="prettybuttons">Test Button</button>
+			
+            <ul id = "tabsToLoadList">
+            </ul>
+        </div>
     </div>
-	<div class="sort-box">
-	  <label for="sort">Sort:</label>
-	  <select name="sort" id="sort">
-		<option value="Alph">Alphabetically</option>
-		<option value="AlphRev">Reverse Alphabetically</option>
-		<option value="Chron">Chronologically</option>
-		<option value="ChronRev">Reverse Chronologically</option>
-	  </select>
-	</div>
-	<div class="toLoad-list" id="toLoadList">
-	"to Load list"
-	</div>
-	</div>
-	
-    <script src="popup.js">
-	</script>
-  </body>
+    </div>
+
+    <template id="groupToLoadListItem">
+    <li>
+        <div>
+        <label>unsorted</label>
+        </div> 
+        <div class=" groupDropDown">
+            <!-- <div class="multiselect">
+                <div class="selectBox" onclick="showCheckboxes()">
+                  <select>
+                    <option>Select an option</option>
+                  </select>
+                  <div class="overSelect"></div>
+                </div>
+                <div id="checkboxes">
+                  <label for="one">
+                    <input type="checkbox" id="one" />First checkbox</label>
+                  <label for="two">
+                    <input type="checkbox" id="two" />Second checkbox</label>
+                  <label for="three">
+                    <input type="checkbox" id="three" />Third checkbox</label>
+                </div>
+              </div> -->
+        </div>
+    </li>
+    </template>
+
+    <script src="popup.js"></script>
+</body>
 </html>
