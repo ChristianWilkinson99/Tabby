@@ -67,7 +67,7 @@ function restore() {
 // Looks at all the checked tabs in list, and saves them in a "tabGroup" object in the "myTabGroups" list
 function saveSelectedTabs()
 {
-  console.log("Saving selected tabs");
+  console.log("saveSelectedTabs");
   var ts = new Date();
   var tg = new tabGroup(ts); 
   var ul = document.getElementById('tabsToSaveList');
@@ -132,20 +132,20 @@ function showTabsToLoad()
   tabsToLoadList.innerText = "";
 
   // Loop through each list item in the tabsToLoadList
-  for (group in myTabGroups) 
+  for (group of myTabGroups) 
   {
 	//put in group title
     //add an onclick listener to the group title
-	console.log("group is " + group);
 	let groupLi = document.createElement("li");
-	groupLi.innerText = group.title;
+	groupLi.innerText = group.name;
 	//groupLi.addEventListener("click", LoadSelectedGroup); //LoadSelectedGroup is not yet a created function
 	groupLi.addEventListener("click", function()
 	{
 		console.log("group clicked");
 	}
 	)
-	tabsToLoadList.appendChild(groupLi);
+
+	
 	
 	let editBtn = document.createElement("button");
 	editBtn.innerText = "Edit";
@@ -157,19 +157,25 @@ function showTabsToLoad()
 	//editBtn.addEventListener("click", DeleteGroup); //DeleteGroup is not yet an existing function
 	tabsToLoadList.appendChild(deleteBtn);
 	
-    for(tab in group.tabList)
+    let groupUl = groupLi.appendChild("ul");
+
+    for(tab of group.tabList)
     {
+        console.log(tab);
 		console.log("for tabs checklist list is loaded");
         // go inside of the group list, and add titles for tab
         // add a checkbox
 		let tabLi = document.createElement("li");
         let tabInp = document.createElement("input");
         tabInp.type = 'checkbox';
-        tabLi.innerText = tab.tabList.title;
+        tabLi.innerText = tab.title;
 		tabLi.appendChild(tabInp);
-		groupLi.appendChild(tabLi);
+		groupUl.appendChild(tabLi);
 		
     }
+
+    // Finally add the group 
+    tabsToLoadList.appendChild(groupLi);
   }
     
     // const divInsideListItem = listItem.querySelector("div");
