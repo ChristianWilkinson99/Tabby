@@ -53,6 +53,15 @@ function storeUpdatedTabGroups() {
     });
 }
 
+function loadGroup(sessionNumber) {
+	console.log("group loaded");
+	console.log(sessionNumber);
+    for (i in myTabGroups[sessionNumber]) {
+		console.log("calling loadTabFromGroup");
+        loadTabFromGroup(sessionNumber, i);
+    }
+}
+
 function restore() {
     chrome.storage.sync.get("myTabGroups", values => {
         if (!chrome.runtime.error) {
@@ -84,6 +93,25 @@ function saveSelectedTabs()
     myTabGroups.push(tg);
     console.log(myTabGroups);
     storeUpdatedTabGroups();
+	
+}
+
+const groupAllBtn = document.getElementById("groupAllbtn");
+groupAllbtn.addEventListener("click", saveAllTabs);
+
+function saveAllTabs()
+{
+  console.log("saveAllTabs");
+  var ts = new Date();
+  var tg = new tabGroup(ts); 
+  for(tab of currentTabs)
+  {
+          console.log(tab.title);
+          tg.addTab(tab);
+  }
+    myTabGroups.push(tg);
+    console.log(myTabGroups);
+    storeUpdatedTabGroups();
 }
 
 
@@ -92,14 +120,12 @@ function changeGroupName(sessionNumber, newName) {
 }
 
 function loadTabFromGroup(sessionNumber, tabIndex) {
+	console.log("opening tab");
+	console.log(myTabGroups[sessionNumber].tabList[tabIndex]);
     window.open(myTabGroups[sessionNumber].tabList[tabIndex]);
 }
 
-function loadGroup(sessionNumber) {
-    for (i in myTabGroups[sessionNumber]) {
-        loadTabFromGroup(sessionNumber, i);
-    }
-}
+
 
 
 async function showTabsToSave() {
@@ -125,7 +151,7 @@ testButton.addEventListener("click", showTabsToLoad);
 
 function showTabsToLoad()
 {
-  console.log("showTabsToLoad has been called");
+  console.log("showTabsToLoad called");
   
   // Get the tabsToLoadList unordered list
   const tabsToLoadList = document.getElementById("tabsToLoadList");
@@ -134,60 +160,79 @@ function showTabsToLoad()
   // Loop through each list item in the tabsToLoadList
   for (group of myTabGroups) 
   {
-	//put in group title
+    //put in group title
     //add an onclick listener to the group title
-	let groupLi = document.createElement("li");
-	groupLi.innerText = group.name;
-	//groupLi.addEventListener("click", LoadSelectedGroup); //LoadSelectedGroup is not yet a created function
-	groupLi.addEventListener("click", function()
+    const groupLi = document.createElement("li");
+    groupLi.innerText = group.name;
+    groupLi.addEventListener("click", loadGroup); //LoadSelectedGroup is not yet a created function
+    /* groupLi.addEventListener("click", function()
+    {
+        console.log("group clicked");
+		for(tabs of group.tab)
+		{
+			window.open(tabs, "_blank");
+		}
+    }
+    ) */
+    
+	
+    let editBtn = document.createElement("button");
+    editBtn.innerText = "Edit";
+    editBtn.addEventListener("click", changeGroupName); 
+    tabsToLoadList.appendChild(editBtn);
+    
+    let deleteBtn = document.createElement("button");
+    deleteBtn.innerText = "Delete";
+    //editBtn.addEventListener("click", DeleteGroup); //DeleteGroup is not yet an existing function
+    tabsToLoadList.appendChild(deleteBtn);
+	
+	let showBtn = document.createElement("button");
+    showBtn.innerText = "Show Tabs";
+    showBtn.addEventListener("click", function()
 	{
-		console.log("group clicked");
-	}
-	)
+		let x = document.getElementById("tabLi");
+			if (x.style.display === "none") {
+			  x.style.display = "block";
+			} else {
+			  x.style.display = "none";
+			}
+		/*
+		let x = document.getElementsByClassName("loadList");
+		  Array.from(x).forEach((x) => {
+			if (x.style.display === "none") {
+			  x.style.display = "block";
+			} else {
+			  x.style.display = "none";
+			}
+		  })
+		 */
+	});
+    tabsToLoadList.appendChild(showBtn);
+	
 
-	
-	
-	let editBtn = document.createElement("button");
-	editBtn.innerText = "Edit";
-	editBtn.addEventListener("click", changeGroupName); 
-	tabsToLoadList.appendChild(editBtn);
-	
-	let deleteBtn = document.createElement("button");
-	deleteBtn.innerText = "Delete";
-	//editBtn.addEventListener("click", DeleteGroup); //DeleteGroup is not yet an existing function
-	tabsToLoadList.appendChild(deleteBtn);
-	
-    let groupUl = groupLi.appendChild("ul");
+    tabsToLoadList.appendChild(groupLi);
+    let groupUl = document.createElement("ul");
 
     for(tab of group.tabList)
     {
         console.log(tab);
-		console.log("for tabs checklist list is loaded");
         // go inside of the group list, and add titles for tab
         // add a checkbox
-		let tabLi = document.createElement("li");
+        let tabLi = document.createElement("li");
         let tabInp = document.createElement("input");
         tabInp.type = 'checkbox';
         tabLi.innerText = tab.title;
-		tabLi.appendChild(tabInp);
-		groupUl.appendChild(tabLi);
-		
+		tabLi.classList.add("loadList");
+        tabLi.appendChild(tabInp);
+        groupUl.appendChild(tabLi);
+        
     }
 
-    // Finally add the group 
-    tabsToLoadList.appendChild(groupLi);
+    // Finally add the group
+    groupLi.appendChild(groupUl)
   }
     
-    // const divInsideListItem = listItem.querySelector("div");
-    // divInsideListItem.classList.add("groupToLoadDiv");
-    // divInsideListItem.title = tabGroup.name;
-    // divInsideListItem.addEventListener("click", function() 
-    // {
-    //   tabGroup.loadGroup();
-    // });
-}
-
-
+  }
 
 // function showTabsToLoad()
 // {
@@ -203,8 +248,6 @@ function showTabsToLoad()
 //     }
 //   }
 // }
-
-
 
 // Reports errors to the console
 function onError(error) {
