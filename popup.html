@@ -39,7 +39,7 @@
         </div>
         <input type="radio" id="tabsilver" name="mytabs" />
         <label for="tabsilver" class="fancyLabels">Load</label>
-        <div class="tab">
+        <div class="tab" id="tabsToLoadTab">
             <label id="searchlbl" runat="server" text="Test" class="indielbl">Search</label>
             <input type="text" id="searchin" name="searchin" /><br />
             <br />
@@ -51,44 +51,15 @@
                 <option value="lastLoaded">Last Opened Tab</option>
             </select>
             <!-- &nbsp;&nbsp;&nbsp; -->
-            <button type="button" id="loadtabbtn" class="prettybuttons">Load Tabs</button>
+            <button type="button" id="loadtabsbtn" class="prettybuttons">Load Tabs</button>
             <br />
             <br />
             <div id="mygroups" style="width: 360px; white-space: nowrap; overflow-y: scroll;">
-			
-			<button type="button" id="testBtn" class="prettybuttons">Test Button</button>
-			
             <ul id = "tabsToLoadList">
             </ul>
         </div>
     </div>
     </div>
-
-    <template id="groupToLoadListItem">
-    <li>
-        <div>
-        <label>unsorted</label>
-        </div> 
-        <div class=" groupDropDown">
-            <!-- <div class="multiselect">
-                <div class="selectBox" onclick="showCheckboxes()">
-                  <select>
-                    <option>Select an option</option>
-                  </select>
-                  <div class="overSelect"></div>
-                </div>
-                <div id="checkboxes">
-                  <label for="one">
-                    <input type="checkbox" id="one" />First checkbox</label>
-                  <label for="two">
-                    <input type="checkbox" id="two" />Second checkbox</label>
-                  <label for="three">
-                    <input type="checkbox" id="three" />Third checkbox</label>
-                </div>
-              </div> -->
-        </div>
-    </li>
-    </template>
 
     <script src="popup.js"></script>
 </body>

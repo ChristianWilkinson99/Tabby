@@ -217,3 +217,13 @@ select {
   #checkboxes label:hover {
     background-color: #1e90ff;
   }
+
+  .arrow-button {
+    display: inline-block;
+    border-style: solid;
+    border-width: 4px 4px 0 4px;
+    border-color: #555 transparent transparent transparent;
+    margin-left: 5px;
+    vertical-align: middle;
+  }
+  
