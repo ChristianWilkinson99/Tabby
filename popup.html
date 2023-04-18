@@ -32,14 +32,14 @@
                 <label id="namegrouplbl" runat="server" class="indielbl">Name</label>
                 <input type="text" id="namegroupin" name="namegroupin" /><br />
             </div>
-            <div Name="myTabs" Size="2" style="width: 352px; height: 170px; margin-top: 0px">
+            <div Name="myTabs" Size="2" style="min-width: 400px; height: 170px; overflow-y: auto; margin-top: 0px">
                 <ul id="tabsToSaveList">
                 </ul>
             </div>
         </div>
         <input type="radio" id="tabsilver" name="mytabs" />
         <label for="tabsilver" class="fancyLabels">Load</label>
-        <div class="tab">
+        <div class="tab" id="tabsToLoadTab">
             <label id="searchlbl" runat="server" text="Test" class="indielbl">Search</label>
             <input type="text" id="searchin" name="searchin" /><br />
             <br />
@@ -51,43 +51,11 @@
                 <option value="lastLoaded">Last Opened Tab</option>
             </select>
             <!-- &nbsp;&nbsp;&nbsp; -->
-            <button type="button" id="loadtabbtn" class="prettybuttons">Load Tabs</button>
+            <button type="button" id="loadtabsbtn" class="prettybuttons">Load Tabs</button>
             <br />
             <br />
-            <div id="mygroups" style="width: 360px; white-space: nowrap; overflow-y: scroll;" ">
+            <div id="mygroups" style="width: 360px; white-space: nowrap; overflow-y: scroll;">
                 <ul id="tabsToLoadList">
-                    <li>
-                        <div>
-                            <label>unsorted</label>
-                        </div>
-                        <div class=" groupDropDown">
-                            <details>
-                                <summary></summary>
-                                <select Name="unsortedTabs" Size="2" style="width: 330px; height: 170px; margin-top: 0px">
-                                    <optgroup>
-                                        <option> Tab 1</option>
-                                        <option> Tab 2 </option>
-                                    </optgroup>
-                                </select>
-                            </details>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <label>sortedTabs</label>
-                        </div>
-                        <div class="groupDropDown">
-                            <details>
-                                <summary></summary>
-                                <select Name="unsortedTabs" Size="2" style="width: 330px; height: 170px; margin-top: 0px">
-                                    <optgroup>
-                                        <option> Tab 1</option>
-                                        <option> Tab 2 </option>
-                                    </optgroup>
-                                </select>
-                            </details>
-                        </div>
-                    </li>
                 </ul>
             </div>
         </div>

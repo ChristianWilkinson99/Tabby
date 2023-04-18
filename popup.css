@@ -41,11 +41,15 @@ input[type=checkbox] {
 }
 #tabsToSaveList {
     list-style-type: none;
+    padding-left: 5px;
+    padding-right: 5px;
+    float: left;
 }
 .saveList {
     margin-bottom: 5px;
     white-space: nowrap;
-    max-width:300px;
+    max-width: 450px;
+    min-width: 300px;
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -139,8 +143,8 @@ select {
     display: flex;
     flex-wrap: wrap;
     max-width: 600px;
-    margin: 50px auto;
-    padding: 25px;
+    margin: 10px auto;
+    padding: 5px;
 }
 
     .mytabs input[type="radio"] {
@@ -172,7 +176,9 @@ select {
     }
 
 .fancyLabels {
-    padding: 25px;
+    padding: 20px;
+    height: 20px;
+    font-size: 25px;
     background: #bab0af;
     font-weight: bold;
     font-family: "Bubblegum Sans";
@@ -181,4 +187,47 @@ select {
 .indielbl {
     font-family: "Indie Flower";
     font-size: 20px;
+}
+
+.multiselect {
+    width: 200px;
+}
+
+.selectBox {
+    position: relative;
+}
+
+    .selectBox select {
+        width: 100%;
+        font-weight: bold;
+    }
+
+.overSelect {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+#checkboxes {
+    display: none;
+    border: 1px #dadada solid;
+}
+
+    #checkboxes label {
+        display: block;
+    }
+
+        #checkboxes label:hover {
+            background-color: #1e90ff;
+        }
+
+.arrow-button {
+    display: inline-block;
+    border-style: solid;
+    border-width: 4px 4px 0 4px;
+    border-color: #555 transparent transparent transparent;
+    margin-left: 5px;
+    vertical-align: middle;
 }
