@@ -6,8 +6,9 @@ class tabGroup {
   timestamp = 0;
   tabList = [];
 
-  constructor(timestamp) {
+  constructor(timestamp, name) {
     this.timestamp = timestamp;
+    this.name = name;
   }
 
   setName(name) {
@@ -28,32 +29,35 @@ async function getCurrentTabs() {
   });
 }
 
-function storeUpdatedTabGroups() {
-  // chrome.storage.sync.set({ "myTabGroups": myTabGroups }, function ()
-  // {
-  //     console.log("Storing everything for next time");
-  //     if (chrome.runtime.error) {
-  //         console.log("Runtime error.");
-  //     }
-  // });
-}
 
 function restore() {
-  chrome.storage.sync.get("myTabGroups", (values) => {
-    if (!chrome.runtime.error) {
-      console.log("restoring everything:");
-      console.log(values);
-      // myTabGroups = values;
-      console.log(myTabGroups);
-    }
-  });
+ chrome.storage.sync.get('myTabGroups', function(data) {
+  if (data.myTabGroups) {
+    console.log('myTabGroups retrieved from Chrome storage:');
+	console.log(data.myTabGroups);
+	myTabGroups = data.myTabGroups;
+	console.log(myTabGroups);
+  } else {
+    console.log('myTabGroups not found in Chrome storage');
+  }
+});
 }
+
+
+function storeUpdatedTabGroups() {
+  chrome.storage.sync.set({ 'myTabGroups': myTabGroups }, function() {
+  console.log('myTabGroups saved to Chrome storage');
+});
+}
+
 
 // Looks at all the checked tabs in list, and saves them in a "tabGroup" object in the "myTabGroups" list
 function saveSelectedTabs() {
   console.log("saveSelectedTabs");
   let ts = new Date();
-  let tg = new tabGroup(ts);
+  let n = document.getElementById("groupNameInput").value;
+  console.log(n);
+  let tg = new tabGroup(ts, n);
   let ul = document.getElementById("tabsToSaveList");
   let items = ul.getElementsByTagName("li");
   for (let i = 0; items[i]; ++i) {
@@ -73,7 +77,8 @@ groupAllbtn.addEventListener("click", saveAllTabs);
 function saveAllTabs() {
   console.log("saveAllTabs");
   var ts = new Date();
-  var tg = new tabGroup(ts);
+  let n = document.getElementById("groupNameInput").value;
+  var tg = new tabGroup(ts, n);
   for (tab of currentTabs) {
     console.log(tab.title);
     tg.addTab(tab);
@@ -99,12 +104,24 @@ function loadTabFromGroup() {
     });
 }
 
-
+//Just shows the tabs to be loaded until fixed
 function loadGroup(group) {
-
+  console.log("LoadGroup");
+  for (t of group.tabList) {
+    //chrome.tabs.create({ url: t.url });
+	console.log(t);
+  }
 }
 
-function DeleteGroup() {}
+//Not finished, just a temporary example
+function deleteGroup() {
+	  for (var i = 0; i < myTabGroups.length; i++) {
+    if (myTabGroups[i].name === groupName) {
+      myTabGroups.splice(i, 1);
+      break;
+    }
+  }
+}
 
 async function showTabsToSave() {
   console.log("creating list of potential tabs to save");
@@ -123,8 +140,85 @@ async function showTabsToSave() {
   });
 }
 
+
+var dropdown = document.getElementById("sortSelect");
+dropdown.addEventListener("change", handleDropdownSelection);
+
+function handleDropdownSelection() {
+  var dropdown = document.getElementById("sortSelect");
+  var selectedValue = dropdown.value;
+  
+  if (selectedValue === "--Sort By--") {
+    console.log("--Sort By--");
+  } else if (selectedValue === "Alpha") {
+    console.log("Alpha");
+	sortTabGroupsByName();
+	showTabsToLoad();
+  } else if (selectedValue === "DateMade") {
+    console.log("DateMade");
+	sortTabGroupsByTimestamp();
+	showTabsToLoad();
+  }
+}
+
+function sortTabGroupsByName() {
+  myTabGroups.sort(function(a, b) {
+	var nameA = a.name.toUpperCase(); // ignore upper and lowercase
+    var nameB = b.name.toUpperCase(); // ignore upper and lowercase
+    if (nameA < nameB) {
+      return -1;
+    }
+    if (nameA > nameB) {
+      return 1;
+    }
+    // names must be equal
+    return 0;
+  });
+}
+
+//useless until timestamp issue is sorted out
+function sortTabGroupsByTimestamp() {
+  myTabGroups.sort(function(a, b) {
+	console.log(Date(a.timestamp));
+	console.log(Date(b.timestamp));
+	var dateA = Date(a.timestamp);
+	var dateB = Date(b.timestamp);
+	
+    //return Date(a.timestamp) - Date(b.timestamp);
+	
+  });
+}
+
+//Also just an example and not yet expanded
+function searchTabGroupsByName() {
+  var searchQuery = document.getElementById("searchInput").value.toUpperCase();
+  var searchResults = [];
+
+  for (var i = 0; i < myTabGroups.name.length; i++) {
+    var groupName = myTabGroups.name[i].toUpperCase();
+    if (groupName.includes(searchQuery)) {
+      searchResults.push(myTabGroups[i]);
+    }
+  }
+   // Display the search results in the popup window
+  // For example, you could display them in a table:
+  var tableBody = document.getElementById("searchResultsTableBody");
+  tableBody.innerHTML = "";
+  for (var j = 0; j < searchResults.length; j++) {
+    var row = tableBody.insertRow();
+    var nameCell = row.insertCell();
+    var urlsCell = row.insertCell();
+    nameCell.innerHTML = searchResults[j].name;
+    urlsCell.innerHTML = searchResults[j].urls.join(", ");
+  }
+}
+
+
+const showGroups = document.getElementById("tabsilver");
+showGroups.addEventListener("click", showTabsToLoad);
+
 function showTabsToLoad() {
-  console.log("showTabsToLoad called");
+  console.log(myTabGroups);
 
   // Get the tabsToLoadList unordered list
   const tabsToLoadList = document.getElementById("tabsToLoadList");
@@ -133,7 +227,7 @@ function showTabsToLoad() {
 
   // Loop through each list item in the tabsToLoadList
   for (group of myTabGroups) {
-    console.log(group);
+    //console.log(group);
     const groupLi = document.createElement("li");
 
     const groupSpan = document.createElement("span");
@@ -141,11 +235,8 @@ function showTabsToLoad() {
     groupLabel = document.createElement("label");
     groupLabel.innerText = group.name;
     groupLabel.addEventListener("click", function () {
-      console.log("group clicked");
-        console.log("LoadGroup");
-	  for (t of group.tabList) {
-		chrome.tabs.create({ url: t.url });
-	  }
+      // loadGroup(group);
+	  console.log(group); //Just shows the group meant to load until fixed
       editBtn.style.display = "block";
       deleteBtn.style.display = "block";
     });
@@ -161,15 +252,20 @@ function showTabsToLoad() {
     editBtn.addEventListener("click", changeGroupName);
     editBtn.style.display = "none";
     groupSpan.appendChild(editBtn);
-
-    groupLi.appendChild(groupSpan);
-
-    let deleteBtn = document.createElement("button");
+	
+	let deleteBtn = document.createElement("button");
     deleteBtn.innerText = "Delete";
     deleteBtn.id = "deleteBtn";
     deleteBtn.style.display = "none";
-    deleteBtn.addEventListener("click", DeleteGroup); //DeleteGroup is not yet an existing function
+    deleteBtn.addEventListener("click", deleteGroup); //DeleteGroup is not yet an existing function
     tabsToLoadList.appendChild(deleteBtn);
+	
+
+
+
+    groupLi.appendChild(groupSpan);
+
+
 
     tabsToLoadList.appendChild(groupLi);
     let groupUl = document.createElement("ul");
@@ -178,8 +274,8 @@ function showTabsToLoad() {
     groupUl.style.display = "none";
 
     for (tab of group.tabList) {
-      console.log(tab);
-      console.log("for tabs checklist list is loaded");
+      //console.log(tab);
+      //console.log("for tabs checklist list is loaded");
       let tabLi = document.createElement("li");
       let tabInp = document.createElement("input");
       tabInp.setAttribute("class", "tabCheckbox");
@@ -193,7 +289,7 @@ function showTabsToLoad() {
     }
 
     groupDropDownBtn.addEventListener("click", function () {
-      console.log("dropdownclicked");
+      //console.log("dropdownclicked");
       // Toggle the visibility of the dropdown list
       if (groupUl.style.display === "none") {
         groupUl.style.display = "block";
