@@ -101,10 +101,7 @@ function loadTabFromGroup() {
 
 
 function loadGroup(group) {
-  console.log("LoadGroup");
-  for (t of group.tabList) {
-    chrome.tabs.create({ url: t.url });
-  }
+
 }
 
 function DeleteGroup() {}
@@ -145,7 +142,10 @@ function showTabsToLoad() {
     groupLabel.innerText = group.name;
     groupLabel.addEventListener("click", function () {
       console.log("group clicked");
-      loadGroup(group);
+        console.log("LoadGroup");
+	  for (t of group.tabList) {
+		chrome.tabs.create({ url: t.url });
+	  }
       editBtn.style.display = "block";
       deleteBtn.style.display = "block";
     });
