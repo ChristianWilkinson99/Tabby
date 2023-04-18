@@ -1,19 +1,5 @@
-// Copyright 2022 Google LLC
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     https://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-let myTabGroups = [];
-let currentTabs = [];
+var myTabGroups = [];
+var currentTabs = [];
 
 class tabGroup {
     name = "unsorted";
@@ -31,7 +17,6 @@ class tabGroup {
     addTab(tab) {
         this.tabList.push(tab);
     }
-
 }
 
 // Saves all the tabs in the current window
@@ -44,61 +29,85 @@ async function getCurrentTabs() {
 }
 
 function storeUpdatedTabGroups() {
-    chrome.storage.sync.set({ "myTabGroups": myTabGroups }, function () {
-        console.log("Storing everything for next time");
-        if (chrome.runtime.error) {
-            console.log("Runtime error.");
-        }
-    });
+    // chrome.storage.sync.set({ "myTabGroups": myTabGroups }, function ()
+    // {
+    //     console.log("Storing everything for next time");
+    //     if (chrome.runtime.error) {
+    //         console.log("Runtime error.");
+    //     }
+    // });
 }
 
 function restore() {
-    chrome.storage.sync.get("myTabGroups", values => {
+    chrome.storage.sync.get("myTabGroups", (values) => {
         if (!chrome.runtime.error) {
             console.log("restoring everything:");
             console.log(values);
-            myTabGroups = values;
+            // myTabGroups = values;
             console.log(myTabGroups);
         }
     });
 }
 
-// Looks at all the checked tabs in ist, and saves them in a "tabGroup" object in the "myTabGroups" list
+// Looks at all the checked tabs in list, and saves them in a "tabGroup" object in the "myTabGroups" list
 function saveSelectedTabs() {
-    console.log("Saving selected tabs");
-    var ts = new Date();
-    var tg = new tabGroup(ts);
-    var ul = document.getElementById('tabsToSaveList');
-    var items = ul.getElementsByTagName("li");
-    console.log(items);
-    for (var i = 0; items[i]; ++i) {
+    console.log("saveSelectedTabs");
+    let ts = new Date();
+    let tg = new tabGroup(ts);
+    let ul = document.getElementById("tabsToSaveList");
+    let items = ul.getElementsByTagName("li");
+    for (let i = 0; items[i]; ++i) {
         if (items[i].childNodes[1].checked == true) {
             console.log("saving " + currentTabs[i].title);
             tg.addTab(currentTabs[i]);
-
         }
+    }
+    myTabGroups.push(tg);
+    storeUpdatedTabGroups();
+    showTabsToLoad();
+}
+
+const groupAllBtn = document.getElementById("groupAllbtn");
+groupAllbtn.addEventListener("click", saveAllTabs);
+
+function saveAllTabs() {
+    console.log("saveAllTabs");
+    var ts = new Date();
+    var tg = new tabGroup(ts);
+    for (tab of currentTabs) {
+        console.log(tab.title);
+        tg.addTab(tab);
     }
     myTabGroups.push(tg);
     console.log(myTabGroups);
     storeUpdatedTabGroups();
 }
 
-
 function changeGroupName(sessionNumber, newName) {
     myTabGroups[sessionNumber].setName(newName);
 }
 
-function loadTabFromGroup(sessionNumber, tabIndex) {
-    window.open(myTabGroups[sessionNumber].tabList[tabIndex]);
+function loadTabFromGroup() {
+
+    console.log("opening tab");
+    const tabCheckboxes = document.querySelectorAll('.tabCheckbox');
+    tabCheckboxes.forEach(tabCheckbox => {
+        if (tabCheckbox.checked) {
+            const u = tabCheckbox.value;
+            chrome.tabs.create({ url: u })
+        }
+    });
 }
 
-function loadGroup(sessionNumber) {
-    for (i in myTabGroups[sessionNumber]) {
-        loadTabFromGroup(sessionNumber, i);
+
+function loadGroup(group) {
+    console.log("LoadGroup");
+    for (t of group.tabList) {
+        chrome.tabs.create({ url: t.url });
     }
 }
 
-//
+function DeleteGroup() { }
 
 async function showTabsToSave() {
     console.log("creating list of potential tabs to save");
@@ -109,52 +118,110 @@ async function showTabsToSave() {
         console.log(i);
         let li = document.createElement("li");
         let inp = document.createElement("input");
-        inp.type = 'checkbox';
+        inp.type = "checkbox";
         li.innerText = i.title;
         li.classList.add("saveList");
         li.appendChild(inp);
         list.appendChild(li);
-    })
-
+    });
 }
 
-// function showTabsToLoad()
-// {
-//   var ttl = document.getElementById("tabsToLoadList");
-//   for (var tg in myTabGroups)
-//   {
-//     // TODO: generate div for group, and appen
-//    ttl.appendChild() 
-//     for ( var t in tg)
-//     {
-//       // TODO: generate tab element
-//       // append child to whatever inside of tg
-//     }
-//   }
-// }
+function showTabsToLoad() {
+    console.log("showTabsToLoad called");
 
+    // Get the tabsToLoadList unordered list
+    const tabsToLoadList = document.getElementById("tabsToLoadList");
+    // remove old list
+    tabsToLoadList.innerHTML = "";
 
+    // Loop through each list item in the tabsToLoadList
+    for (group of myTabGroups) {
+        console.log(group);
+        const groupLi = document.createElement("li");
 
-// Reports errors to the console
-function onError(error) {
-    console.error(`Error: ${error}`);
+        const groupSpan = document.createElement("span");
+        console.log(group.name);
+        groupLabel = document.createElement("label");
+        groupLabel.innerText = group.name;
+        groupLabel.addEventListener("click", function () {
+            console.log("group clicked");
+            loadGroup(group);
+            editBtn.style.display = "block";
+            deleteBtn.style.display = "block";
+        });
+        groupSpan.appendChild(groupLabel);
+
+        let groupDropDownBtn = document.createElement("button");
+        groupDropDownBtn.setAttribute("class", "arrow-button");
+        groupSpan.appendChild(groupDropDownBtn);
+
+        let editBtn = document.createElement("button");
+        editBtn.innerText = "Edit";
+        editBtn.id = "editBtn";
+        editBtn.addEventListener("click", changeGroupName);
+        editBtn.style.display = "none";
+        groupSpan.appendChild(editBtn);
+
+        groupLi.appendChild(groupSpan);
+
+        let deleteBtn = document.createElement("button");
+        deleteBtn.innerText = "Delete";
+        deleteBtn.id = "deleteBtn";
+        deleteBtn.style.display = "none";
+        deleteBtn.addEventListener("click", DeleteGroup); //DeleteGroup is not yet an existing function
+        tabsToLoadList.appendChild(deleteBtn);
+
+        tabsToLoadList.appendChild(groupLi);
+        let groupUl = document.createElement("ul");
+
+        // Hide the dropdown list initially
+        groupUl.style.display = "none";
+
+        for (tab of group.tabList) {
+            console.log(tab);
+            console.log("for tabs checklist list is loaded");
+            let tabLi = document.createElement("li");
+            let tabInp = document.createElement("input");
+            tabInp.setAttribute("class", "tabCheckbox");
+            tabInp.type = "checkbox";
+            tabInp.value = tab.url;
+            let tabLabel = document.createElement("label");
+            tabLabel.textContent = tab.title;
+            tabLabel.insertBefore(tabInp, tabLabel.firstChild);
+            tabLi.appendChild(tabLabel);
+            groupUl.appendChild(tabLi);
+        }
+
+        groupDropDownBtn.addEventListener("click", function () {
+            console.log("dropdownclicked");
+            // Toggle the visibility of the dropdown list
+            if (groupUl.style.display === "none") {
+                groupUl.style.display = "block";
+            } else {
+                groupUl.style.display = "none";
+            }
+        });
+
+        // Finally add the group
+        groupLi.appendChild(groupUl);
+    }
 }
 
-// Extension Starts here 
+// Extension Starts here
 
+// add an event listener to the load tabs button
+const loadTabsBtn = document.getElementById("loadtabsbtn");
+loadTabsBtn.addEventListener("click", loadTabFromGroup);
 
 const groupSelectedButton = document.getElementById("groupSelectedbtn");
 groupSelectedButton.addEventListener("click", saveSelectedTabs);
 
-document.addEventListener('DOMContentLoaded', function () {
-
+document.addEventListener("DOMContentLoaded", function () {
     restore();
     showTabsToSave();
-
+    showTabsToLoad();
 });
 
-window.addEventListener('unload', function () {
-
+window.addEventListener("unload", function () {
     // unregisterEvents();
-
 });
