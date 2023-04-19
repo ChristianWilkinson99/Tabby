@@ -54,7 +54,7 @@ function storeUpdatedTabGroups() {
 // Looks at all the checked tabs in list, and saves them in a "tabGroup" object in the "myTabGroups" list
 function saveSelectedTabs() {
   console.log("saveSelectedTabs");
-  let ts = new Date();
+  let ts = new Date().getTime();
   let n = document.getElementById("groupNameInput").value;
   console.log(n);
   let tg = new tabGroup(ts, n);
@@ -76,7 +76,7 @@ groupAllbtn.addEventListener("click", saveAllTabs);
 
 function saveAllTabs() {
   console.log("saveAllTabs");
-  var ts = new Date();
+  var ts = new Date().getTime();
   let n = document.getElementById("groupNameInput").value;
   var tg = new tabGroup(ts, n);
   for (tab of currentTabs) {
@@ -106,22 +106,24 @@ function loadTabFromGroup() {
 
 //Just shows the tabs to be loaded until fixed
 function loadGroup(group) {
-  console.log("LoadGroup");
+  console.log(group);
   for (t of group.tabList) {
     //chrome.tabs.create({ url: t.url });
-	console.log(t);
+	console.log(t.url);
   }
 }
 
 //Not finished, just a temporary example
-function deleteGroup() {
-	  for (var i = 0; i < myTabGroups.length; i++) {
-    if (myTabGroups[i].name === groupName) {
-      myTabGroups.splice(i, 1);
-      break;
-    }
+function deleteGroup(group) {
+  const index = myTabGroups.indexOf(group);
+  if (index !== -1) {
+    console.log("deleted")
+    myTabGroups.splice(index, 1);
+    storeUpdatedTabGroups();
+    showTabsToLoad();
   }
 }
+
 
 async function showTabsToSave() {
   console.log("creating list of potential tabs to save");
@@ -226,7 +228,7 @@ function showTabsToLoad() {
   tabsToLoadList.innerHTML = "";
 
   // Loop through each list item in the tabsToLoadList
-  for (group of myTabGroups) {
+  for (const group of myTabGroups) {
     //console.log(group);
     const groupLi = document.createElement("li");
 
@@ -235,10 +237,7 @@ function showTabsToLoad() {
     groupLabel = document.createElement("label");
     groupLabel.innerText = group.name;
     groupLabel.addEventListener("click", function () {
-      // loadGroup(group);
-	  console.log(group); //Just shows the group meant to load until fixed
-      editBtn.style.display = "block";
-      deleteBtn.style.display = "block";
+      loadGroup(group);
     });
     groupSpan.appendChild(groupLabel);
 
@@ -257,7 +256,7 @@ function showTabsToLoad() {
     deleteBtn.innerText = "Delete";
     deleteBtn.id = "deleteBtn";
     deleteBtn.style.display = "none";
-    deleteBtn.addEventListener("click", deleteGroup); //DeleteGroup is not yet an existing function
+    deleteBtn.addEventListener("click", ()=>{deleteGroup(group)}); //DeleteGroup is not yet an existing function
     tabsToLoadList.appendChild(deleteBtn);
 	
 
@@ -293,8 +292,12 @@ function showTabsToLoad() {
       // Toggle the visibility of the dropdown list
       if (groupUl.style.display === "none") {
         groupUl.style.display = "block";
+        editBtn.style.display = "block";
+        deleteBtn.style.display = "block";
       } else {
         groupUl.style.display = "none";
+        editBtn.style.display = "none";
+        deleteBtn.style.display = "none";
       }
     });
 
