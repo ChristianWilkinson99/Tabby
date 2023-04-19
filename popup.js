@@ -31,7 +31,7 @@ async function getCurrentTabs() {
 
 
 function restore() {
- chrome.storage.sync.get('myTabGroups', function(data) {
+ chrome.storage.local.get('myTabGroups', function(data) {
   if (data.myTabGroups) {
     console.log('myTabGroups retrieved from Chrome storage:');
 	console.log(data.myTabGroups);
@@ -45,7 +45,7 @@ function restore() {
 
 
 function storeUpdatedTabGroups() {
-  chrome.storage.sync.set({ 'myTabGroups': myTabGroups }, function() {
+  chrome.storage.local.set({ 'myTabGroups': myTabGroups }, function() {
   console.log('myTabGroups saved to Chrome storage');
 });
 }
@@ -104,16 +104,14 @@ function loadTabFromGroup() {
     });
 }
 
-//Just shows the tabs to be loaded until fixed
 function loadGroup(group) {
   console.log(group);
   for (t of group.tabList) {
-    //chrome.tabs.create({ url: t.url });
+    chrome.tabs.create({ url: t.url });
 	console.log(t.url);
   }
 }
 
-//Not finished, just a temporary example
 function deleteGroup(group) {
   const index = myTabGroups.indexOf(group);
   if (index !== -1) {
@@ -122,6 +120,13 @@ function deleteGroup(group) {
     storeUpdatedTabGroups();
     showTabsToLoad();
   }
+}
+
+function editGroupName(group, input) {
+	const newName = input.value;
+	group.name = newName;
+	storeUpdatedTabGroups();
+	showTabsToLoad();
 }
 
 
@@ -178,20 +183,16 @@ function sortTabGroupsByName() {
   });
 }
 
-//useless until timestamp issue is sorted out
 function sortTabGroupsByTimestamp() {
   myTabGroups.sort(function(a, b) {
-	console.log(Date(a.timestamp));
-	console.log(Date(b.timestamp));
-	var dateA = Date(a.timestamp);
-	var dateB = Date(b.timestamp);
+	console.log(b.timestamp);
 	
-    //return Date(a.timestamp) - Date(b.timestamp);
+    return (b.timestamp) - (a.timestamp);
 	
   });
 }
 
-//Also just an example and not yet expanded
+//just an example and not yet expanded
 function searchTabGroupsByName() {
   var searchQuery = document.getElementById("searchInput").value.toUpperCase();
   var searchResults = [];
@@ -227,9 +228,13 @@ function showTabsToLoad() {
   // remove old list
   tabsToLoadList.innerHTML = "";
 
+
   // Loop through each list item in the tabsToLoadList
   for (const group of myTabGroups) {
+	  
     //console.log(group);
+	console.log(group.timestamp);	
+	
     const groupLi = document.createElement("li");
 
     const groupSpan = document.createElement("span");
@@ -244,11 +249,17 @@ function showTabsToLoad() {
     let groupDropDownBtn = document.createElement("button");
     groupDropDownBtn.setAttribute("class", "arrow-button");
     groupSpan.appendChild(groupDropDownBtn);
+	
+	let input = document.createElement("input");
+    input.setAttribute("type", "text");
+	input.setAttribute("value", group.name);
+	input.style.display = "none";
+    groupSpan.appendChild(input);
 
     let editBtn = document.createElement("button");
     editBtn.innerText = "Edit";
     editBtn.id = "editBtn";
-    editBtn.addEventListener("click", changeGroupName);
+    editBtn.addEventListener("click", ()=>{editGroupName(group, input)} );
     editBtn.style.display = "none";
     groupSpan.appendChild(editBtn);
 	
@@ -256,16 +267,11 @@ function showTabsToLoad() {
     deleteBtn.innerText = "Delete";
     deleteBtn.id = "deleteBtn";
     deleteBtn.style.display = "none";
-    deleteBtn.addEventListener("click", ()=>{deleteGroup(group)}); //DeleteGroup is not yet an existing function
+    deleteBtn.addEventListener("click", ()=>{deleteGroup(group)});
     tabsToLoadList.appendChild(deleteBtn);
-	
-
-
 
     groupLi.appendChild(groupSpan);
-
-
-
+	
     tabsToLoadList.appendChild(groupLi);
     let groupUl = document.createElement("ul");
 
@@ -294,10 +300,12 @@ function showTabsToLoad() {
         groupUl.style.display = "block";
         editBtn.style.display = "block";
         deleteBtn.style.display = "block";
+		input.style.display = "block";
       } else {
         groupUl.style.display = "none";
         editBtn.style.display = "none";
         deleteBtn.style.display = "none";
+		input.style.display = "none";
       }
     });
 
