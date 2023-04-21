@@ -238,5 +238,6 @@ select {
     top: 3px;
     transform: rotate(45deg);
     transform: rotate(225deg);
+    vertical-align: 5px;
 }
 
