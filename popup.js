@@ -18,6 +18,15 @@ class tabGroup {
   addTab(tab) {
     this.tabList.push(tab);
   }
+
+  deleteTab(tab) {
+    consol.log(tab);
+    let i = this.tabList.indexOf(tab);
+    if(i !== -1){
+      this.tabList.splice(i, 1);
+    }
+  }
+
 }
 
 // Saves all the tabs in the current window
@@ -115,12 +124,13 @@ function loadGroup(group) {
 function deleteGroup(group) {
   const index = myTabGroups.indexOf(group);
   if (index !== -1) {
-    console.log("deleted")
+    console.log("deleted group")
     myTabGroups.splice(index, 1);
     storeUpdatedTabGroups();
     showTabsToLoad();
   }
 }
+
 
 function editGroupName(group, input) {
 	const newName = input.value;
@@ -288,22 +298,25 @@ function showTabsToLoad(filteredGroups, searchValue) {
     groupDropDownBtn.setAttribute("class", "arrow-button");
     groupSpan.appendChild(groupDropDownBtn);
 	
-	let input = document.createElement("input");
+	  let input = document.createElement("input");
     input.setAttribute("type", "text");
-	input.setAttribute("value", group.name);
-	input.style.display = "none";
+	  input.setAttribute("value", group.name);
+	  input.style.display = "none";
     groupSpan.appendChild(input);
 
     let editBtn = document.createElement("button");
     editBtn.innerText = "Edit";
     editBtn.id = "editBtn";
-    editBtn.addEventListener("click", ()=>{editGroupName(group, input)} );
+    editBtn.addEventListener("click", ()=>{
+      //editGroupName(group, input);
+      toggleTabDeleteButton(groupUl);
+    } );
     editBtn.style.display = "none";
     groupSpan.appendChild(editBtn);
 	
 	let deleteBtn = document.createElement("button");
     deleteBtn.innerText = "Delete";
-    deleteBtn.id = "deleteBtn";
+    deleteBtn.class = "deleteBtn";
     deleteBtn.style.display = "none";
     deleteBtn.addEventListener("click", ()=>{deleteGroup(group)});
     tabsToLoadList.appendChild(deleteBtn);
@@ -320,6 +333,16 @@ function showTabsToLoad(filteredGroups, searchValue) {
       //console.log(tab);
       //console.log("for tabs checklist list is loaded");
       let tabLi = document.createElement("li");
+      let delBtn = document.createElement("button");
+      delBtn.style.display = "none";
+      delBtn.setAttribute("class" ,"deleteTabBtn");
+      tabLi.appendChild(delBtn);
+      delBtn.addEventListener("click", ()=>{
+        console.log(group);
+        group.deleteTab(tab);
+        storeUpdatedTabGroups();
+        showTabsToLoad();
+      });
       let tabInp = document.createElement("input");
       tabInp.setAttribute("class", "tabCheckbox");
       tabInp.type = "checkbox";
@@ -329,8 +352,10 @@ function showTabsToLoad(filteredGroups, searchValue) {
       tabLabel.insertBefore(tabInp, tabLabel.firstChild);
       tabLi.appendChild(tabLabel);
       groupUl.appendChild(tabLi);
+
     }
 
+    
     groupDropDownBtn.addEventListener("click", function () {
       //console.log("dropdownclicked");
       // Toggle the visibility of the dropdown list
@@ -338,7 +363,8 @@ function showTabsToLoad(filteredGroups, searchValue) {
         groupUl.style.display = "block";
         editBtn.style.display = "block";
         deleteBtn.style.display = "block";
-		input.style.display = "block";
+		    input.style.display = "block";
+
       } else {
         groupUl.style.display = "none";
         editBtn.style.display = "none";
@@ -346,6 +372,8 @@ function showTabsToLoad(filteredGroups, searchValue) {
 		input.style.display = "none";
       }
     });
+
+
 
     // Finally add the group
     groupLi.appendChild(groupUl);
@@ -370,3 +398,15 @@ document.addEventListener("DOMContentLoaded", function () {
 window.addEventListener("unload", function () {
   // unregisterEvents();
 });
+
+function toggleTabDeleteButton(ulElement) {
+  let items = ulElement.getElementsByClassName("deleteTabBtn");
+  console.log(ulElement);
+  for (let i = 0; i < items.length; i++) {
+    if (items[i].style.display === 'none') {
+      items[i].style.display = 'block';
+    } else {
+      items[i].style.display = 'none';
+    }
+  }
+}
