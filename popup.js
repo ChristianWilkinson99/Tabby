@@ -121,10 +121,12 @@ function deleteGroup(group) {
 }
 
 function editGroupName(group, input) {
-    const newName = input.value;
-    group.name = newName;
-    storeUpdatedTabGroups();
-    showTabsToLoad();
+    if (event.key === "Enter") {
+        const newName = input.value;
+        group.name = newName;
+        storeUpdatedTabGroups();
+        showTabsToLoad();
+    }
 }
 
 
@@ -252,12 +254,13 @@ function showTabsToLoad() {
         input.setAttribute("type", "text");
         input.setAttribute("value", group.name);
         input.style.display = "none";
+        input.addEventListener("keypress", () => { editGroupName(group, input) });
         groupSpan.appendChild(input);
 
         let editBtn = document.createElement("button");
         editBtn.innerText = "Edit";
         editBtn.id = "editBtn";
-        editBtn.addEventListener("click", () => { editGroupName(group, input) });
+        //editBtn.addEventListener("click", () => { editGroupName(group, input) });
         editBtn.style.display = "none";
         groupSpan.appendChild(editBtn);
 
@@ -298,13 +301,21 @@ function showTabsToLoad() {
                 groupUl.style.display = "block";
                 editBtn.style.display = "block";
                 deleteBtn.style.display = "block";
-                input.style.display = "block";
             } else {
                 groupUl.style.display = "none";
                 editBtn.style.display = "none";
                 deleteBtn.style.display = "none";
                 input.style.display = "none";
             }
+
+            editBtn.addEventListener("click", function () {
+                if (input.style.display === "none") {
+                    input.style.display = "block";
+                } else {
+                    input.style.display = "none";
+                }
+            });
+
         });
 
         // Finally add the group
