@@ -161,9 +161,13 @@ function handleDropdownSelection() {
     console.log("Alpha");
 	sortTabGroupsByName();
 	showTabsToLoad();
-  } else if (selectedValue === "DateMade") {
-    console.log("DateMade");
-	sortTabGroupsByTimestamp();
+  } else if (selectedValue === "Newest") {
+    console.log("Newest");
+	sortTabGroupsByTimestampNewest();
+	showTabsToLoad();
+  } else if (selectedValue === "Oldest") {
+    console.log("Oldest");
+	sortTabGroupsByTimestampOldest();
 	showTabsToLoad();
   }
 }
@@ -183,7 +187,7 @@ function sortTabGroupsByName() {
   });
 }
 
-function sortTabGroupsByTimestamp() {
+function sortTabGroupsByTimestampNewest() {
   myTabGroups.sort(function(a, b) {
 	console.log(b.timestamp);
 	
@@ -192,9 +196,19 @@ function sortTabGroupsByTimestamp() {
   });
 }
 
+function sortTabGroupsByTimestampOldest() {
+  myTabGroups.sort(function(a, b) {
+	console.log(b.timestamp);
+	
+    return (a.timestamp) - (b.timestamp);
+	
+  });
+}
+
 //just an example and not yet expanded
+/*
 function searchTabGroupsByName() {
-  var searchQuery = document.getElementById("searchInput").value.toUpperCase();
+  var searchQuery = document.getElementById("searchin").value.toUpperCase();
   var searchResults = [];
 
   for (var i = 0; i < myTabGroups.name.length; i++) {
@@ -215,30 +229,54 @@ function searchTabGroupsByName() {
     urlsCell.innerHTML = searchResults[j].urls.join(", ");
   }
 }
+*/
+	
+	let searchBar = document.getElementById("searchin");
+	searchBar.addEventListener("keyup", groupSearch);
+	
+	function groupSearch() {
+	var searchValue = searchBar.value.toLowerCase();
+	var filteredGroups = myTabGroups.filter(function(myTabGroups) {
+	return myTabGroups.name.toLowerCase().includes(searchValue); });
+	//console.log(filteredGroups);
+	//console.log(searchValue);
+	showTabsToLoad(filteredGroups, searchValue);
+	};
 
-
+	
 const showGroups = document.getElementById("tabsilver");
 showGroups.addEventListener("click", showTabsToLoad);
 
-function showTabsToLoad() {
+function showTabsToLoad(filteredGroups, searchValue) {
   console.log(myTabGroups);
+  var look = [];
+  look = myTabGroups;
 
   // Get the tabsToLoadList unordered list
   const tabsToLoadList = document.getElementById("tabsToLoadList");
   // remove old list
   tabsToLoadList.innerHTML = "";
 
-
+	if (searchValue) {
+		look = filteredGroups;
+		console.log(filteredGroups);
+		console.log(searchValue);
+	}
+	else {
+		look = myTabGroups;
+		console.log("searchbar is empty");
+	}
+  
   // Loop through each list item in the tabsToLoadList
-  for (const group of myTabGroups) {
-	  
+  for (const group of look) {
+	
     //console.log(group);
-	console.log(group.timestamp);	
+	//console.log(group.timestamp);	
 	
     const groupLi = document.createElement("li");
 
     const groupSpan = document.createElement("span");
-    console.log(group.name);
+    //console.log(group.name);
     groupLabel = document.createElement("label");
     groupLabel.innerText = group.name;
     groupLabel.addEventListener("click", function () {
