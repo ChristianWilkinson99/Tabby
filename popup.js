@@ -136,8 +136,8 @@ function deleteGroup(group) {
 }
 
 
-function editGroupName(group, input) {
-	const newName = input.value;
+function editGroupName(group, value) {
+	const newName = value;
 	group.name = newName;
 	storeUpdatedTabGroups();
 	showTabsToLoad();
@@ -196,7 +196,6 @@ function sortTabGroupsByName() {
     if (nameA > nameB) {
       return 1;
     }
-    // names must be equal
     return 0;
   });
 }
@@ -218,32 +217,6 @@ function sortTabGroupsByTimestampOldest() {
 	
   });
 }
-
-//just an example and not yet expanded
-/*
-function searchTabGroupsByName() {
-  var searchQuery = document.getElementById("searchin").value.toUpperCase();
-  var searchResults = [];
-
-  for (var i = 0; i < myTabGroups.name.length; i++) {
-    var groupName = myTabGroups.name[i].toUpperCase();
-    if (groupName.includes(searchQuery)) {
-      searchResults.push(myTabGroups[i]);
-    }
-  }
-   // Display the search results in the popup window
-  // For example, you could display them in a table:
-  var tableBody = document.getElementById("searchResultsTableBody");
-  tableBody.innerHTML = "";
-  for (var j = 0; j < searchResults.length; j++) {
-    var row = tableBody.insertRow();
-    var nameCell = row.insertCell();
-    var urlsCell = row.insertCell();
-    nameCell.innerHTML = searchResults[j].name;
-    urlsCell.innerHTML = searchResults[j].urls.join(", ");
-  }
-}
-*/
 	
 	let searchBar = document.getElementById("searchin");
 	searchBar.addEventListener("keyup", groupSearch);
@@ -252,8 +225,6 @@ function searchTabGroupsByName() {
 	var searchValue = searchBar.value.toLowerCase();
 	var filteredGroups = myTabGroups.filter(function(myTabGroups) {
 	return myTabGroups.name.toLowerCase().includes(searchValue); });
-	//console.log(filteredGroups);
-	//console.log(searchValue);
 	showTabsToLoad(filteredGroups, searchValue);
 	};
 
@@ -302,18 +273,29 @@ function showTabsToLoad(filteredGroups, searchValue) {
     groupDropDownBtn.setAttribute("class", "arrow-button");
     groupSpan.appendChild(groupDropDownBtn);
 	
-	  let input = document.createElement("input");
-    input.setAttribute("type", "text");
-	  input.setAttribute("value", group.name);
-	  input.style.display = "none";
-    groupSpan.appendChild(input);
+	  const groupNameInput = document.createElement("input");
+    groupNameInput.setAttribute("type", "text");
+	  groupNameInput.setAttribute("value", group.name);
+	  groupNameInput.style.display = "none";
+    groupNameInput.addEventListener("keyup", function({key}){
+      if (key === "Enter") {
+        console.log(groupNameInput.val);
+          editGroupName(group, groupNameInput.value);
+      }
+    });
+
+    groupSpan.appendChild(groupNameInput);
 
     let editBtn = document.createElement("button");
     editBtn.innerText = "Edit";
     editBtn.id = "editBtn";
     editBtn.addEventListener("click", ()=>{
-      //editGroupName(group, input);
-      toggleTabDeleteButton(groupUl);
+      toggleTabDeleteButtons(groupUl);
+      if(groupNameInput.style.display === "block"){
+        groupNameInput.style.display = "none";
+      }else{
+        groupNameInput.style.display = "block";
+      }
     } );
     editBtn.style.display = "none";
     groupSpan.appendChild(editBtn);
@@ -366,13 +348,11 @@ function showTabsToLoad(filteredGroups, searchValue) {
         groupUl.style.display = "block";
         editBtn.style.display = "block";
         deleteBtn.style.display = "block";
-		    input.style.display = "block";
 
       } else {
         groupUl.style.display = "none";
         editBtn.style.display = "none";
         deleteBtn.style.display = "none";
-		input.style.display = "none";
       }
     });
 
@@ -402,7 +382,7 @@ window.addEventListener("unload", function () {
   // unregisterEvents();
 });
 
-function toggleTabDeleteButton(ulElement) {
+function toggleTabDeleteButtons (ulElement) {
   let items = ulElement.getElementsByClassName("deleteTabBtn");
   console.log(ulElement);
   for (let i = 0; i < items.length; i++) {
