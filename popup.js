@@ -1,7 +1,8 @@
 var myTabGroups = [];
 var currentTabs = [];
 
-class tabGroup {
+class tabGroup 
+{
   name = "unsorted";
   timestamp = 0;
   tabList = [];
@@ -19,14 +20,17 @@ class tabGroup {
     this.tabList.push(tab);
   }
 
-  deleteTab(tab) {
-    consol.log(tab);
-    let i = this.tabList.indexOf(tab);
-    if(i !== -1){
-      this.tabList.splice(i, 1);
-    }
-  }
+}
 
+function deleteTab(group, tab)
+{
+  console.log(tab);
+  let i = group.tabList.indexOf(tab);
+  if(i !== -1){
+  group.tabList.splice(i, 1);
+  storeUpdatedTabGroups();
+  showTabsToLoad();
+  }
 }
 
 // Saves all the tabs in the current window
@@ -328,21 +332,20 @@ function showTabsToLoad(filteredGroups, searchValue) {
 
     // Hide the dropdown list initially
     groupUl.style.display = "none";
-
+    i = 0;
     for (tab of group.tabList) {
       //console.log(tab);
       //console.log("for tabs checklist list is loaded");
       let tabLi = document.createElement("li");
       let delBtn = document.createElement("button");
       delBtn.style.display = "none";
+      delBtn.setAttribute("data-index", i);
       delBtn.setAttribute("class" ,"deleteTabBtn");
+      delBtn.setAttribute("id", "deleteBtn" + i); // add id to the delete button
+      delBtn.addEventListener("click", function () { deleteTab(group, tab); }); // pass the group as a parameter
+
       tabLi.appendChild(delBtn);
-      delBtn.addEventListener("click", ()=>{
-        console.log(group);
-        group.deleteTab(tab);
-        storeUpdatedTabGroups();
-        showTabsToLoad();
-      });
+
       let tabInp = document.createElement("input");
       tabInp.setAttribute("class", "tabCheckbox");
       tabInp.type = "checkbox";
@@ -352,7 +355,7 @@ function showTabsToLoad(filteredGroups, searchValue) {
       tabLabel.insertBefore(tabInp, tabLabel.firstChild);
       tabLi.appendChild(tabLabel);
       groupUl.appendChild(tabLi);
-
+      i++;
     }
 
     
@@ -410,3 +413,4 @@ function toggleTabDeleteButton(ulElement) {
     }
   }
 }
+
