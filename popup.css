@@ -37,7 +37,13 @@
 input[type=checkbox] {
     width: auto;
     margin-left:3px;
+    margin-right: 10px;
     float:right;
+    display: inline-block;
+}
+li{
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 #tabsToSaveList {
     list-style-type: none;
@@ -238,5 +244,13 @@ select {
     top: 3px;
     transform: rotate(45deg);
     transform: rotate(225deg);
+}
+
+.editbtn{
+    margin:auto;
+}
+
+#deletebtn {
+    margin:auto;
 }
 

@@ -6,8 +6,9 @@ class tabGroup {
     timestamp = 0;
     tabList = [];
 
-    constructor(timestamp) {
+    constructor(timestamp, name) {
         this.timestamp = timestamp;
+        this.name = name;
     }
 
     setName(name) {
@@ -16,6 +17,17 @@ class tabGroup {
 
     addTab(tab) {
         this.tabList.push(tab);
+    }
+
+}
+
+function deleteTab(group, tab) {
+    console.log(tab);
+    let i = group.tabList.indexOf(tab);
+    if (i !== -1) {
+        group.tabList.splice(i, 1);
+        storeUpdatedTabGroups();
+        showTabsToLoad();
     }
 }
 
@@ -27,6 +39,7 @@ async function getCurrentTabs() {
         }
     });
 }
+
 
 function restore() {
     chrome.storage.local.get('myTabGroups', function (data) {
@@ -113,16 +126,17 @@ function loadGroup(group) {
 function deleteGroup(group) {
     const index = myTabGroups.indexOf(group);
     if (index !== -1) {
-        console.log("deleted")
+        console.log("deleted group")
         myTabGroups.splice(index, 1);
         storeUpdatedTabGroups();
         showTabsToLoad();
     }
 }
 
-function editGroupName(group, input) {
+
+function editGroupName(group, value) {
+    const newName = value;
     if (event.key === "Enter") {
-        const newName = input.value;
         group.name = newName;
         storeUpdatedTabGroups();
         showTabsToLoad();
@@ -161,9 +175,13 @@ function handleDropdownSelection() {
         console.log("Alpha");
         sortTabGroupsByName();
         showTabsToLoad();
-    } else if (selectedValue === "DateMade") {
-        console.log("DateMade");
-        sortTabGroupsByTimestamp();
+    } else if (selectedValue === "Newest") {
+        console.log("Newest");
+        sortTabGroupsByTimestampNewest();
+        showTabsToLoad();
+    } else if (selectedValue === "Oldest") {
+        console.log("Oldest");
+        sortTabGroupsByTimestampOldest();
         showTabsToLoad();
     }
 }
@@ -178,12 +196,11 @@ function sortTabGroupsByName() {
         if (nameA > nameB) {
             return 1;
         }
-        // names must be equal
         return 0;
     });
 }
 
-function sortTabGroupsByTimestamp() {
+function sortTabGroupsByTimestampNewest() {
     myTabGroups.sort(function (a, b) {
         console.log(b.timestamp);
 
@@ -192,85 +209,100 @@ function sortTabGroupsByTimestamp() {
     });
 }
 
-//just an example and not yet expanded
-function searchTabGroupsByName() {
-    var searchQuery = document.getElementById("searchInput").value.toUpperCase();
-    var searchResults = [];
+function sortTabGroupsByTimestampOldest() {
+    myTabGroups.sort(function (a, b) {
+        console.log(b.timestamp);
 
-    for (var i = 0; i < myTabGroups.name.length; i++) {
-        var groupName = myTabGroups.name[i].toUpperCase();
-        if (groupName.includes(searchQuery)) {
-            searchResults.push(myTabGroups[i]);
-        }
-    }
-    // Display the search results in the popup window
-    // For example, you could display them in a table:
-    var tableBody = document.getElementById("searchResultsTableBody");
-    tableBody.innerHTML = "";
-    for (var j = 0; j < searchResults.length; j++) {
-        var row = tableBody.insertRow();
-        var nameCell = row.insertCell();
-        var urlsCell = row.insertCell();
-        nameCell.innerHTML = searchResults[j].name;
-        urlsCell.innerHTML = searchResults[j].urls.join(", ");
-    }
+        return (a.timestamp) - (b.timestamp);
+
+    });
 }
+
+let searchBar = document.getElementById("searchin");
+searchBar.addEventListener("keyup", groupSearch);
+
+function groupSearch() {
+    var searchValue = searchBar.value.toLowerCase();
+    var filteredGroups = myTabGroups.filter(function (myTabGroups) {
+        return myTabGroups.name.toLowerCase().includes(searchValue);
+    });
+    showTabsToLoad(filteredGroups, searchValue);
+};
 
 
 const showGroups = document.getElementById("tabsilver");
 showGroups.addEventListener("click", showTabsToLoad);
 
-function showTabsToLoad() {
+function showTabsToLoad(filteredGroups, searchValue) {
     console.log(myTabGroups);
+    var look = [];
+    look = myTabGroups;
 
     // Get the tabsToLoadList unordered list
     const tabsToLoadList = document.getElementById("tabsToLoadList");
     // remove old list
     tabsToLoadList.innerHTML = "";
 
+    if (searchValue) {
+        look = filteredGroups;
+        console.log(filteredGroups);
+        console.log(searchValue);
+    }
+    else {
+        look = myTabGroups;
+        console.log("searchbar is empty");
+    }
 
     // Loop through each list item in the tabsToLoadList
-    for (const group of myTabGroups) {
+    for (const group of look) {
 
         //console.log(group);
-        console.log(group.timestamp);
+        //console.log(group.timestamp);	
 
         const groupLi = document.createElement("li");
 
         const groupSpan = document.createElement("span");
-        console.log(group.name);
+        //console.log(group.name);
         groupLabel = document.createElement("label");
         groupLabel.innerText = group.name;
         groupLabel.addEventListener("click", function () {
             loadGroup(group);
         });
         groupSpan.appendChild(groupLabel);
-
+        
         let groupDropDownBtn = document.createElement("button");
         groupDropDownBtn.setAttribute("class", "arrow-button");
         groupSpan.appendChild(groupDropDownBtn);
 
-        let input = document.createElement("input");
-        input.setAttribute("type", "text");
-        input.setAttribute("value", group.name);
-        input.style.display = "none";
-        input.addEventListener("keypress", () => { editGroupName(group, input) });
-        groupSpan.appendChild(input);
+        const groupNameInput = document.createElement("input");
+        groupNameInput.setAttribute("type", "text");
+        groupNameInput.setAttribute("value", group.name);
+        groupNameInput.style.display = "none";
+        groupNameInput.addEventListener("keypress", () => { editGroupName(group, groupNameInput.value) }); 
+        groupSpan.appendChild(groupNameInput);
 
         let editBtn = document.createElement("button");
         editBtn.innerText = "Edit";
         editBtn.id = "editBtn";
-        //editBtn.addEventListener("click", () => { editGroupName(group, input) });
+        editBtn.className = "editbtn";
+        editBtn.addEventListener("click", () => {
+            toggleTabDeleteButtons(groupUl);
+            if (groupNameInput.style.display === "block") {
+                groupNameInput.style.display = "none";
+            } else {
+                groupNameInput.style.display = "block";
+            }
+        });
         editBtn.style.display = "none";
-        groupSpan.appendChild(editBtn);
+        tabsToLoadList.appendChild(editBtn);
 
         let deleteBtn = document.createElement("button");
         deleteBtn.innerText = "Delete";
-        deleteBtn.id = "deleteBtn";
+        deleteBtn.className = "editbtn";
         deleteBtn.style.display = "none";
         deleteBtn.addEventListener("click", () => { deleteGroup(group) });
         tabsToLoadList.appendChild(deleteBtn);
-
+        //groupli.appendChild(tabsToLoadList);
         groupLi.appendChild(groupSpan);
 
         tabsToLoadList.appendChild(groupLi);
@@ -278,11 +310,20 @@ function showTabsToLoad() {
 
         // Hide the dropdown list initially
         groupUl.style.display = "none";
-
+        i = 0;
         for (tab of group.tabList) {
             //console.log(tab);
             //console.log("for tabs checklist list is loaded");
             let tabLi = document.createElement("li");
+            let delBtn = document.createElement("button");
+            delBtn.style.display = "none";
+            delBtn.setAttribute("data-index", i);
+            delBtn.setAttribute("class", "deleteTabBtn");
+            delBtn.setAttribute("id", "deleteBtn" + i); // add id to the delete button
+            delBtn.addEventListener("click", function () { deleteTab(group, tab); }); // pass the group as a parameter
+
+            tabLi.appendChild(delBtn);
+
             let tabInp = document.createElement("input");
             tabInp.setAttribute("class", "tabCheckbox");
             tabInp.type = "checkbox";
@@ -292,7 +333,9 @@ function showTabsToLoad() {
             tabLabel.insertBefore(tabInp, tabLabel.firstChild);
             tabLi.appendChild(tabLabel);
             groupUl.appendChild(tabLi);
+            i++;
         }
+
 
         groupDropDownBtn.addEventListener("click", function () {
             //console.log("dropdownclicked");
@@ -301,23 +344,14 @@ function showTabsToLoad() {
                 groupUl.style.display = "block";
                 editBtn.style.display = "block";
                 deleteBtn.style.display = "block";
+
             } else {
                 groupUl.style.display = "none";
                 editBtn.style.display = "none";
                 deleteBtn.style.display = "none";
                 input.style.display = "none";
             }
-
-            editBtn.addEventListener("click", function () {
-                if (input.style.display === "none") {
-                    input.style.display = "block";
-                } else {
-                    input.style.display = "none";
-                }
-            });
-
         });
-
         // Finally add the group
         groupLi.appendChild(groupUl);
     }
@@ -341,3 +375,15 @@ document.addEventListener("DOMContentLoaded", function () {
 window.addEventListener("unload", function () {
     // unregisterEvents();
 });
+
+function toggleTabDeleteButtons(ulElement) {
+    let items = ulElement.getElementsByClassName("deleteTabBtn");
+    console.log(ulElement);
+    for (let i = 0; i < items.length; i++) {
+        if (items[i].style.display === 'none') {
+            items[i].style.display = 'block';
+        } else {
+            items[i].style.display = 'none';
+        }
+    }
+}
