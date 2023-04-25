@@ -349,7 +349,7 @@ function showTabsToLoad(filteredGroups, searchValue) {
                 groupUl.style.display = "none";
                 editBtn.style.display = "none";
                 deleteBtn.style.display = "none";
-                input.style.display = "none";
+                groupNameInput.style.display = "none";
             }
         });
         // Finally add the group
