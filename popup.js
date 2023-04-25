@@ -297,7 +297,7 @@ function showTabsToLoad(filteredGroups, searchValue) {
         tabsToLoadList.appendChild(editBtn);
 
         let deleteBtn = document.createElement("button");
-        deleteBtn.innerText = "Delete";
+        deleteBtn.innerText = "Delete Group";
         deleteBtn.className = "editbtn";
         deleteBtn.style.display = "none";
         deleteBtn.addEventListener("click", () => { deleteGroup(group) });
@@ -382,6 +382,7 @@ function toggleTabDeleteButtons(ulElement) {
     for (let i = 0; i < items.length; i++) {
         if (items[i].style.display === 'none') {
             items[i].style.display = 'block';
+            items[i].innerText = "Delete";
         } else {
             items[i].style.display = 'none';
         }

@@ -44,6 +44,7 @@ input[type=checkbox] {
 li{
     padding-top: 10px;
     padding-bottom: 10px;
+    font-size: 14px;
 }
 #tabsToSaveList {
     list-style-type: none;
@@ -53,8 +54,9 @@ li{
 }
 .saveList {
     margin-bottom: 5px;
-    white-space: nowrap;
-    max-width: 450px;
+    font-size: 14px;
+    white-space: pre-wrap;
+    max-width: 370px;
     min-width: 300px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -251,5 +253,10 @@ select {
     display: inline-flex;
     float:right;
     margin: auto;
+    margin-top: 8px;
+    margin-left: 2px;
 }
-
+.deleteTabBtn {
+    display: inline-flex;
+    float: right;
+}
