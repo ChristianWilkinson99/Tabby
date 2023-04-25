@@ -230,9 +230,9 @@ select {
         }
 
 .arrow-button {
-    display:inline-block;
-    padding:2px;
-    margin-left:5px;
+    display: inline-block;
+    padding: 2px;
+    margin-left: 5px;
     height: 3px;
     width: 3px;
     border-top: 3px solid black;
@@ -244,6 +244,7 @@ select {
     top: 3px;
     transform: rotate(45deg);
     transform: rotate(225deg);
+    vertical-align: 5px;
 }
 
 .editbtn{
