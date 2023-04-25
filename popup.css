@@ -247,11 +247,9 @@ select {
     vertical-align: 5px;
 }
 
-.editbtn{
-    margin:auto;
-}
-
-#deletebtn {
-    margin:auto;
+.editbtn {
+    display: inline-flex;
+    float:right;
+    margin: auto;
 }
 

@@ -311,7 +311,7 @@ function showTabsToLoad(filteredGroups, searchValue) {
         // Hide the dropdown list initially
         groupUl.style.display = "none";
         i = 0;
-        for (tab of group.tabList) {
+        for (const tab of group.tabList) {
             //console.log(tab);
             //console.log("for tabs checklist list is loaded");
             let tabLi = document.createElement("li");
