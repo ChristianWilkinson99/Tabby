@@ -26,14 +26,13 @@
             <button id="groupSelectedbtn" class="prettybuttons" />
             <label for="groupSelectedbtn">Group Selected</label>
             </button>
-            <button type="button" id="groupAllbtn" class="prettybuttons">Group All</button>
-            <br />
+            <button type="button" id="groupAllbtn" class="prettybuttons">Group All</button>            <br />
             <div class="namegroup" id="namegroupdiv">
                 <br />
                 <label id="namegrouplbl" runat="server" class="indielbl">Name</label>
                 <input type="text" id="namegroupin" name="namegroupin" /><br />
             </div>
-            <div Name="myTabs" Size="2" style="width: 352px; height: 170px; margin-top: 0px">
+            <div Name="myTabs" Size="2" style="min-width: 400px; min-height: 200; max-height: 430px; overflow-y: auto; margin-top: 0px; white-space: nowrap">
                 <ul id="tabsToSaveList">
                 </ul>
             </div>
@@ -55,13 +54,12 @@
             <button type="button" id="loadtabsbtn" class="prettybuttons">Load Tabs</button>
             <br />
             <br />
-            <div id="mygroups" style="width: 360px; white-space: nowrap; overflow-y: scroll;">
-            <ul id = "tabsToLoadList">
-            </ul>
+            <div id="mygroups" Size="2" style="min-width: 400px; min-height: 200px; max-height: 380px; overflow-y: auto; margin-top: 0px">
+                <ul id="tabsToLoadList">
+                </ul>
+            </div>
         </div>
     </div>
-    </div>
-
     <script src="popup.js"></script>
 </body>
 </html>

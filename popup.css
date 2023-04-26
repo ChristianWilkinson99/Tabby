@@ -37,15 +37,27 @@
 input[type=checkbox] {
     width: auto;
     margin-left:3px;
+    margin-right: 10px;
     float:right;
+    display: inline-block;
+}
+li{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 14px;
 }
 #tabsToSaveList {
     list-style-type: none;
+    padding-left: 3px;
+    padding-right: 3px;
+    float: left;
 }
 .saveList {
-    margin-bottom: 5px;
-    white-space: nowrap;
-    max-width:300px;
+    margin-bottom: .5px;
+    font-size: 14px;
+    white-space: pre-wrap;
+    max-width: 400px;
+    min-width: 300px;
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -139,8 +151,9 @@ select {
     display: flex;
     flex-wrap: wrap;
     max-width: 600px;
-    margin: 50px auto;
-    padding: 25px;
+	max-height: 500px;
+    margin: 10px auto;
+    padding: 5px;
 }
 
     .mytabs input[type="radio"] {
@@ -172,7 +185,9 @@ select {
     }
 
 .fancyLabels {
-    padding: 25px;
+    padding: 20px;
+    height: 20px;
+    font-size: 25px;
     background: #bab0af;
     font-weight: bold;
     font-family: "Bubblegum Sans";
@@ -183,47 +198,66 @@ select {
     font-size: 20px;
 }
 
-
 .multiselect {
     width: 200px;
-  }
-  
-  .selectBox {
+}
+
+.selectBox {
     position: relative;
-  }
-  
-  .selectBox select {
-    width: 100%;
-    font-weight: bold;
-  }
-  
-  .overSelect {
+}
+
+    .selectBox select {
+        width: 100%;
+        font-weight: bold;
+    }
+
+.overSelect {
     position: absolute;
     left: 0;
     right: 0;
     top: 0;
     bottom: 0;
-  }
-  
-  #checkboxes {
+}
+
+#checkboxes {
     display: none;
     border: 1px #dadada solid;
-  }
-  
-  #checkboxes label {
-    display: block;
-  }
-  
-  #checkboxes label:hover {
-    background-color: #1e90ff;
-  }
+}
 
-  .arrow-button {
+    #checkboxes label {
+        display: block;
+    }
+
+        #checkboxes label:hover {
+            background-color: #1e90ff;
+        }
+
+.arrow-button {
     display: inline-block;
-    border-style: solid;
-    border-width: 4px 4px 0 4px;
-    border-color: #555 transparent transparent transparent;
+    padding: 2px;
     margin-left: 5px;
-    vertical-align: middle;
-  }
-  
+    height: 3px;
+    width: 3px;
+    border-top: 3px solid black;
+    border-left: 3px solid black;
+    border-right: transparent;
+    border-bottom: transparent;
+    background: transparent;
+    left: 3px;
+    top: 3px;
+    transform: rotate(45deg);
+    transform: rotate(225deg);
+    vertical-align: 5px;
+}
+
+.editbtn {
+    display: inline-flex;
+    float:right;
+    margin: auto;
+    margin-top: 8px;
+    margin-left: 2px;
+}
+.deleteTabBtn {
+    display: inline-flex;
+    float: right;
+}
