@@ -21,28 +21,25 @@
     <div class="mytabs">
         <input type="radio" id="tabfree" name="mytabs" checked="checked" />
         <label for="tabfree" class="fancyLabels">Save</label>
-        <div class="tab">
-            <button id="groupSelectedbtn"class="prettybuttons"/>
+        <div class="tab" id="tabsToSaveTab">
+            <input type="text" value="Unsorted" id="groupNameInput">
+            <button id="groupSelectedbtn" class="prettybuttons" />
             <label for="groupSelectedbtn">Group Selected</label>
             </button>
-            &nbsp;&nbsp;&nbsp;
-            <button type="button" id="groupAllbtn" onclick="showNameGroup()" class="prettybuttons">Group All</button>
-            <br />
+            <button type="button" id="groupAllbtn" class="prettybuttons">Group All</button>            <br />
             <div class="namegroup" id="namegroupdiv">
                 <br />
                 <label id="namegrouplbl" runat="server" class="indielbl">Name</label>
-            <input type="text" id="namegroupin" name="namegroupin" /><br />
+                <input type="text" id="namegroupin" name="namegroupin" /><br />
             </div>
-            <div class="mysavedtabs" Name="myTabs" Size="2" style="width: 352px; height: 170px; margin-top: 0px">
-                    <ul>
-                    <li><input type="checkbox"> tab title 1</li>
-                    <li><input type="checkbox"> tab title 2</li>
+            <div Name="myTabs" Size="2" style="min-width: 400px; min-height: 200; max-height: 430px; overflow-y: auto; margin-top: 0px; white-space: nowrap">
+                <ul id="tabsToSaveList">
                 </ul>
             </div>
         </div>
         <input type="radio" id="tabsilver" name="mytabs" />
         <label for="tabsilver" class="fancyLabels">Load</label>
-        <div class="tab">
+        <div class="tab" id="tabsToLoadTab">
             <label id="searchlbl" runat="server" text="Test" class="indielbl">Search</label>
             <input type="text" id="searchin" name="searchin" /><br />
             <br />
@@ -50,60 +47,19 @@
             <select name="sortBy" id="sortSelect">
                 <option value="">--Sort By--</option>
                 <option value="Alpha">Alphabetically</option>
-                <option value="DateMade">Date Made</option>
-                <option value="lastLoaded">Last Opened Tab</option>
+                <option value="Newest">Newest</option>
+                <option value="Oldest">Oldest</option>
             </select>
-            &nbsp;&nbsp;&nbsp;
-            <button type="button" id="loadtabbtn" class="prettybuttons">Load Tabs</button>
+            <!-- &nbsp;&nbsp;&nbsp; -->
+            <button type="button" id="loadtabsbtn" class="prettybuttons">Load Tabs</button>
             <br />
             <br />
-            <div id="mygroups" style="width: 360px; white-space: nowrap; overflow-y: scroll;"">
-            <ul>
-                <li>
-                    <div>
-                        <label>unsorted</label>
-                    </div>
-                    <div class=" groupDropDown">
-                <details>
-                    <summary></summary>
-                    <select Name="unsortedTabs" Size="2" style="width: 330px; height: 170px; margin-top: 0px">
-                        <optgroup>
-                            <option> Tab 1</option>
-                            <option> Tab 2 </option>
-                        </optgroup>
-                    </select>
-                </details>
+            <div id="mygroups" Size="2" style="min-width: 400px; min-height: 200px; max-height: 380px; overflow-y: auto; margin-top: 0px">
+                <ul id="tabsToLoadList">
+                </ul>
             </div>
-            </li>
-            <li>
-                <div>
-                    <label>sortedTabs</label>
-                </div>
-                <div class="groupDropDown">
-                    <details>
-                        <summary></summary>
-                        <select Name="unsortedTabs" Size="2" style="width: 330px; height: 170px; margin-top: 0px">
-                            <optgroup>
-                                <option> Tab 1</option>
-                                <option> Tab 2 </option>
-                            </optgroup>
-                        </select>
-                    </details>
-                </div>
-            </li>
-            </ul>
         </div>
     </div>
-    </div>
-<script>
-    function showNameGroup() {
-        var x = document.getElementById("namegroupdiv");
-        if (x.style.display === "none") {
-            x.style.display = "block";
-        } else {
-            x.style.display = "none";
-        }
-    }
-</script>
+    <script src="popup.js"></script>
 </body>
 </html>
