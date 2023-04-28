@@ -1,3 +1,12 @@
+// Tabby was developed by:
+// Marshall Carlson
+// Joshua Collins
+// Victoria Fontenot
+// Sarah Larsen
+// Paola Olvera
+// Christian Wilkinson
+// This was developed for UHCL CSCI 4388 Senior Projects in Computer Science Spring 2023
+
 var myTabGroups = [];
 var currentTabs = [];
 
@@ -22,6 +31,7 @@ class tabGroup
 
 }
 
+// Deletes selected individual tab from tab group
 function deleteTab(group, tab)
 {
   console.log(tab);
